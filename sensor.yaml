@@ -30,10 +30,24 @@ spec:
               - name: hello
                 image: alpine
                 command: ["echo"]
-                args: ["This is the message you sent me:\n", ""]
+                args:
+                - "This is the ref you sent me:\n"
+                - ""
+                - "\nThis is the commit hash:\n"
+                - ""
+                - "\nThis is the repo address:\n"
+                - ""
               restartPolicy: Never
         parameters:
           - src:
               dependencyName: payload
-              dataKey: body.message
+              dataKey: body.ref
             dest: spec.containers.0.args.1
+          - src:
+              dependencyName: payload
+              dataKey: body.commits.0.id
+            dest: spec.containers.0.args.3
+          - src:
+              dependencyName: payload
+              dataKey: body.repository.full_name
+            dest: spec.containers.0.args.5
