@@ -3,7 +3,13 @@ import time
 
 import git
 
+GITDEF = "https://models.westfall.io/"
+GITHOST = os.environ.get("GITHOST",GITDEF)
+
 def checkout_branch_commit(ref, commit, repopath):
+    print(repopath)
+    repopath = GITHOST + repopath
+    print(repopath)
     git.Git(".").clone(repopath)
     httppath = repopath[repopath.find('/')+2:]
     httpparts = httppath.split("/")
