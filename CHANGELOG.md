@@ -1,6 +1,12 @@
 # CHANGELOG
 
+## v0.1.13 (2024-11-05)
+
 ## v0.1.12 (2024-11-05)
+
+### :bug:
+
+* :bug: Adding element debug ([`9e28991`](https://github.com/Westfall-io/windspear/commit/9e28991a48583597f15cdcaaecce872a7e15a056))
 
 ## v0.1.11 (2024-11-05)
 
