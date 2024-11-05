@@ -37,8 +37,12 @@ COPY ./requirements.txt ./requirements.txt
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 ## Download and install SysML kernel
-RUN wget https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation/releases/download/2024-09/jupyter-sysml-kernel-0.45.0.zip
-RUN unzip jupyter-sysml-kernel-0.45.0.zip -d /tmp \
+#RUN wget https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation/releases/download/2024-09/jupyter-sysml-kernel-0.45.0.zip
+#RUN unzip jupyter-sysml-kernel-0.45.0.zip -d /tmp \
+#  && python3 /tmp/install.py
+
+RUN wget https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation/releases/download/2023-07/jupyter-sysml-kernel-0.34.0.zip
+RUN unzip jupyter-sysml-kernel-0.34.0.zip -d /tmp \
   && python3 /tmp/install.py
 
 RUN sed 's|"env": {},|"env": {"ISYSML_API_BASE_PATH": "'$APIHOST'"},|' -i /usr/local/share/jupyter/kernels/sysml/kernel.json
