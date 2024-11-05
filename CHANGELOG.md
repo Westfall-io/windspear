@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.8 (2024-11-05)
+
+### :bug:
+
+* :bug: Adding debug ([`d8b51d4`](https://github.com/Westfall-io/windspear/commit/d8b51d4ab3c638d8e5395a60edba8a0a964e63f0))
+
 ## v0.1.7 (2024-11-05)
 
 ### :bug:
