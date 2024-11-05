@@ -29,7 +29,7 @@ def checkout_branch_commit(ref, commit, repopath):
     else:
         h = copy.deepcopy(GITHOST)
         parts = h.split('//')
-        parts.insert(1,'{}:{}'.format(GITUSER, GITPASS))
+        parts.insert(1,'{}:{}@'.format(GITUSER, GITPASS))
         parts.insert(1,'//')
         repopath = ''.join(parts) + repopath
     print(repopath)
