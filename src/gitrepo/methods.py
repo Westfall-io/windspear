@@ -15,17 +15,22 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+from env import *
+
 import time
 
 import git
 
-GITDEF = "https://models.westfall.io/"
-GITHOST = os.environ.get("GITHOST",GITDEF)
-
 def checkout_branch_commit(ref, commit, repopath):
     print(repopath)
-    repopath = GITHOST + repopath
+    if GITUSER == '':
+        repopath = GITHOST + repopath
+    else:
+        parts = GITHOST.split('//')
+        parts.insert(1,'{}:{}'.format(GITUSER, GITPASS))
+        parts.insert(1,'//')
+        GITHOST = ''.join(x)
+        repopath = GITHOST + repopath
     print(repopath)
     git.Git(".").clone(repopath)
     httppath = repopath[repopath.find('/')+2:]

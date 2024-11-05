@@ -38,19 +38,48 @@ spec:
                 - "\nThis is the repo address:\n"
                 - ""
               - name: publish
-                image: core.harbor.domain/digitalforge/windspear:0.1.26
+                image: docker.io/westfallio/windspear:0.1.3
                 command: ["python"]
                 env:
+                - name: DEBUG
+                  value: True
                 - name: GITHOST
                   value: http://gitea-http.gitea:3000/
                 - name: APIHOST
                   value: http://sysmlv2api.sysmlapi:9000/
                 - name: SQLHOST
                   value: postgres-postgresql.windstorm:5432
+                - name: WINDSTORMHOST
+                  value: http://windstorm-webhook-eventsource-svc.argo-events:12000/windstorm
                 - name: HARBORTOOL
                   value: Harbor
                 - name: ARTIFACTSTOOL
                   value: Artifacts
+                - name: DBUSER  # name of env var
+                  valueFrom:
+                    secretKeyRef:
+                      name: dbparams     # name of an existing k8s secret
+                      key: username     # 'key' subcomponent of the secret
+                - name: DBPASS  # name of env var
+                  valueFrom:
+                    secretKeyRef:
+                      name: dbparams     # name of an existing k8s secret
+                      key: password     # 'key' subcomponent of the secret
+                - name: DBTABLE  # name of env var
+                  valueFrom:
+                    secretKeyRef:
+                      name: dbparams     # name of an existing k8s secret
+                      key: table     # 'key' subcomponent of the secret
+                - name: GITUSER  # name of env var
+                  valueFrom:
+                    secretKeyRef:
+                      name: gitparams     # name of an existing k8s secret
+                      key: username     # 'key' subcomponent of the secret
+                - name: GITPASS  # name of env var
+                  valueFrom:
+                    secretKeyRef:
+                      name: gitparams     # name of an existing k8s secret
+                      key: password     # 'key' subcomponent of the secret
                 args:
                 - "src/main.py"
                 - ""

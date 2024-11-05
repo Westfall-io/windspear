@@ -15,11 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
-SQLDEF = "localhost:5432"
-SQLHOST = os.environ.get("SQLHOST",SQLDEF)
-DEBUG = os.environ.get("DEBUG",True)
+from env import *
 
 import json
 
@@ -31,10 +27,10 @@ from database.models import Model_Repo, Commits, Models, Elements, \
 
 def connect():
     db_type = "postgresql"
-    user = "postgres"
-    passwd = "mysecretpassword"
+    user = DBUSER
+    passwd = DBPASS
     address = SQLHOST
-    db_name = "sysml2"
+    db_name = DBTABLE
 
     address = db_type+"://"+user+":"+passwd+"@"+address+"/"+db_name
     engine = db.create_engine(address)

@@ -15,19 +15,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from env import *
+
 import time
 start_time = time.time()
-
-import os
-
-APIDEF = "https://api.sysml.domain"
-APIHOST = os.environ.get("APIHOST",APIDEF)
-WINDSTORMHOST = os.environ.get(
-    "WINDSTORMHOST",
-    "http://windstorm-webhook-eventsource-svc.argo-events:12000/windstorm"
-)
-
-DEBUG = os.environ.get("DEBUG",True)
 
 from datetime import datetime
 import dateutil
