@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## v0.1.12 (2024-11-05)
+
 ## v0.1.11 (2024-11-05)
 
 ### :bug:
+
+* :bug: Fixed an issue where the next webhook endpoint was unavailable ([`367bb49`](https://github.com/Westfall-io/windspear/commit/367bb495d02c69177dbdd91cd72cba9f15249870))
 
 * :bug: Adding proper url syntax ([`c79f5a6`](https://github.com/Westfall-io/windspear/commit/c79f5a62d848f317918022966aac2a911f62c0f7))
 
