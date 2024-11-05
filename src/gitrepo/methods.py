@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from env import GITHOST, GITUSER, GITPASS
-print(GITHOST)
+from env import *
 
 import time
 
@@ -27,6 +26,7 @@ def checkout_branch_commit(ref, commit, repopath):
     if GITUSER == '':
         repopath = GITHOST + repopath
     else:
+        global GITHOST
         parts = GITHOST.split('//')
         parts.insert(1,'{}:{}'.format(GITUSER, GITPASS))
         parts.insert(1,'//')
