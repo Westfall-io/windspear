@@ -1,6 +1,20 @@
 # CHANGELOG
 
+## v0.1.1 (2024-11-05)
+
+### :heavy_plus_sign:
+
+* :heavy_plus_sign: Adding wget ([`8952b39`](https://github.com/Westfall-io/windspear/commit/8952b39f3967a294e9f8df70b4badc230b7ab98d))
+
+### Other
+
+* :fire: Removing alpine and using python slim ([`dd2a1d4`](https://github.com/Westfall-io/windspear/commit/dd2a1d4122b2c931e2b507964b17d1d8c8c8736b))
+
 ## v0.1.0 (2024-11-05)
+
+### Other
+
+* :technologist: Adding dockerfile ([`79a819d`](https://github.com/Westfall-io/windspear/commit/79a819d4daebdf73f5329b23189772d1e32fafe3))
 
 ## v0.0.0 (2024-11-05)
 
