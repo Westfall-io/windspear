@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## v0.1.15 (2024-11-05)
+
 ## v0.1.14 (2024-11-05)
 
 ### :bug:
+
+* :bug: Reverting dependency update ([`7a5d82b`](https://github.com/Westfall-io/windspear/commit/7a5d82b71b5f1c03a77efa12175753bf72e26fed))
 
 * :bug: Adding element debug ([`c16ac1a`](https://github.com/Westfall-io/windspear/commit/c16ac1a7499eac781066b62f97b386660229b055))
 
