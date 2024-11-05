@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## v0.1.9 (2024-11-05)
+
 ## v0.1.8 (2024-11-05)
 
 ### :bug:
+
+* :bug: Adding global test ([`73e6af1`](https://github.com/Westfall-io/windspear/commit/73e6af19ba3861100c59b33aa725db9c9fa8159b))
 
 * :bug: Adding debug ([`d8b51d4`](https://github.com/Westfall-io/windspear/commit/d8b51d4ab3c638d8e5395a60edba8a0a964e63f0))
 
