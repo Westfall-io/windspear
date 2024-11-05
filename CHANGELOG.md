@@ -1,6 +1,16 @@
 # CHANGELOG
 
+## v0.1.3 (2024-11-05)
+
+### :bug:
+
+* :bug: Removed hardcoded database password and added a git password from secrets ([`e0e95f5`](https://github.com/Westfall-io/windspear/commit/e0e95f5fe6eaccade0315fb3b1d8825ca1deaa97))
+
 ## v0.1.2 (2024-11-05)
+
+### Other
+
+* :arrow_up: Updating to latest SysML kernel ([`528204e`](https://github.com/Westfall-io/windspear/commit/528204ed1f1eedae45d6047f6432e2bbdf45fb7e))
 
 ## v0.1.1 (2024-11-05)
 
