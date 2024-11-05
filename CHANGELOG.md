@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.1.10 (2024-11-05)
+
+### :bug:
+
+* :bug: Adding correct syntax ([`5359768`](https://github.com/Westfall-io/windspear/commit/53597682bd15cd7cbaed2a875c7191ddfdfdc7b3))
+
+* :bug: Adding deepcopy ([`a9e169f`](https://github.com/Westfall-io/windspear/commit/a9e169fd547a09e27279a9e94498861f31c32cb1))
+
 ## v0.1.9 (2024-11-05)
 
 ## v0.1.8 (2024-11-05)
