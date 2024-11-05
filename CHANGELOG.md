@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.11 (2024-11-05)
+
+### :bug:
+
+* :bug: Adding proper url syntax ([`c79f5a6`](https://github.com/Westfall-io/windspear/commit/c79f5a62d848f317918022966aac2a911f62c0f7))
+
 ## v0.1.10 (2024-11-05)
 
 ### :bug:
