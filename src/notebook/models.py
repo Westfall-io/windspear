@@ -79,6 +79,9 @@ class Element:
     def istype(self, type):
         return self.element['payload']['@type'] == type
 
+    def get_type(self):
+        return self.element['payload']['@type']
+
     def find_subelements(self, key, type, elements):
         subelements = []
         val = self.get_key(key)

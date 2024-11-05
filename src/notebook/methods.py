@@ -227,7 +227,7 @@ def search_models(dir_path, DEBUG=False):
                                         if "text/html" in out["data"]:
                                             html = out["data"]["text/html"][0]
                                             data = json.loads(base64.b64decode(html[html.find('href=')+35:-14]))
-                                            print(json.dumps(data, sort_keys=True, indent=10))
+                                            #print(json.dumps(data, sort_keys=True, indent=10))
                                             element_name = cell["source"][0][8:]
                                             id_cell = cell["metadata"]["tags"][0]
                                             models[id_cell][-2] = element_name
@@ -305,6 +305,7 @@ def parse_models(models, elements):
 
     for element_id in elements:
         e = Element(element_id, elements)
+        print(e.get_type())
         if e.istype('VerificationCaseDefinition'):
             # Create a verification
             print('Found a verification -- {}'.format(element_id))
