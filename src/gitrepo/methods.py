@@ -31,8 +31,7 @@ def checkout_branch_commit(ref, commit, repopath):
         parts = h.split('//')
         parts.insert(1,'{}:{}'.format(GITUSER, GITPASS))
         parts.insert(1,'//')
-        GITHOST = ''.join(x)
-        repopath = GITHOST + repopath
+        repopath = ''.join(parts) + repopath
     print(repopath)
     git.Git(".").clone(repopath)
     httppath = repopath[repopath.find('/')+2:]
