@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## v0.1.4 (2024-11-05)
+
 ## v0.1.3 (2024-11-05)
 
 ### :bug:
+
+* :bug: Adding env code ([`0066c29`](https://github.com/Westfall-io/windspear/commit/0066c294bf0a96ebc54073b7378d45d6368d90d1))
 
 * :bug: Removed hardcoded database password and added a git password from secrets ([`e0e95f5`](https://github.com/Westfall-io/windspear/commit/e0e95f5fe6eaccade0315fb3b1d8825ca1deaa97))
 
