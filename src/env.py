@@ -17,7 +17,7 @@
 
 import os
 
-DEBUG = os.environ.get("DEBUG",True)
+DEBUG = os.environ.get("DEBUG",False)
 
 SQLDEF = "localhost:5432"
 SQLHOST = os.environ.get("SQLHOST",SQLDEF)

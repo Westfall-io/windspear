@@ -38,11 +38,11 @@ spec:
                 - "\nThis is the repo address:\n"
                 - ""
               - name: publish
-                image: docker.io/westfallio/windspear:v0.1.10
+                image: docker.io/westfallio/windspear:v0.1.11
                 command: ["python"]
                 env:
                 - name: GITHOST
-                  value: http://gitea-http.gitea:3000/
+                  value: http://gitea-models-http.gitea-models:3000/
                 - name: APIHOST
                   value: http://sysmlv2api.sysmlapi:9000/
                 - name: SQLHOST

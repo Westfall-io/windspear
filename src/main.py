@@ -146,12 +146,15 @@ def main(ref, commit, repopath, default_branch):
 
     database.push_commit_completed(cdb_id)
 
-    requests.post(WINDSTORMHOST, json = {
-        'source' : 'spear',
-        'payload' : {
-            'ref': ref.split('/')[-1]
-        }
-    })
+    try:
+        requests.post(WINDSTORMHOST, json = {
+            'source' : 'spear',
+            'payload' : {
+                'ref': ref.split('/')[-1]
+            }
+        })
+    except:
+        print('Could not connect to windstorm webhook endpoint.')
 
 if __name__ == '__main__':
     if DEBUG:
