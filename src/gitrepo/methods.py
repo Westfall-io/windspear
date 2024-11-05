@@ -22,7 +22,7 @@ import time
 import git
 
 def checkout_branch_commit(ref, commit, repopath):
-    print(repopath)
+    print(repopath, GITHOST)
     if GITUSER == '':
         repopath = GITHOST + repopath
     else:
