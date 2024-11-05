@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from env import GITHOST, GITUSER, GITPASS
+print(GITHOST)
 
 import time
 
