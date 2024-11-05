@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## v0.1.2 (2024-11-05)
+
 ## v0.1.1 (2024-11-05)
 
 ### :heavy_plus_sign:
+
+* :heavy_plus_sign: Adding unzip ([`3ec2f30`](https://github.com/Westfall-io/windspear/commit/3ec2f300463a3766c8f11191ff09a470284edf36))
 
 * :heavy_plus_sign: Adding wget ([`8952b39`](https://github.com/Westfall-io/windspear/commit/8952b39f3967a294e9f8df70b4badc230b7ab98d))
 
