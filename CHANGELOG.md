@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.5 (2024-11-05)
+
+### :heavy_plus_sign:
+
+* :heavy_plus_sign: Readding git and jdk dependencies ([`2e4e309`](https://github.com/Westfall-io/windspear/commit/2e4e3094f3110e54c441250975ac53de1cf8b1b9))
+
 ## v0.1.4 (2024-11-05)
 
 ## v0.1.3 (2024-11-05)
