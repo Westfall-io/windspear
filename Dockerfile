@@ -31,7 +31,7 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_NO_CACHE_DIR=1
 
 ## Install python libraries
-RUN apt-get update && apt-get install -y libpq-dev gcc wget
+RUN apt-get update && apt-get install -y libpq-dev gcc wget unzip
 RUN pip install "psycopg[binary]"
 COPY ./requirements.txt ./requirements.txt
 RUN pip install --upgrade pip && pip install -r requirements.txt
