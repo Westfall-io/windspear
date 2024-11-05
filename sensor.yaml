@@ -38,11 +38,9 @@ spec:
                 - "\nThis is the repo address:\n"
                 - ""
               - name: publish
-                image: docker.io/westfallio/windspear:0.1.4
+                image: docker.io/westfallio/windspear:v0.1.5
                 command: ["python"]
                 env:
-                - name: DEBUG
-                  value: True
                 - name: GITHOST
                   value: http://gitea-http.gitea:3000/
                 - name: APIHOST
