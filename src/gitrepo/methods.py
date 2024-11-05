@@ -18,6 +18,7 @@
 from env import *
 
 import time
+import copy
 
 import git
 
@@ -26,8 +27,8 @@ def checkout_branch_commit(ref, commit, repopath):
     if GITUSER == '':
         repopath = GITHOST + repopath
     else:
-        global GITHOST
-        parts = GITHOST.split('//')
+        h = copy.deepcopy(GITHOST)
+        parts = h.split('//')
         parts.insert(1,'{}:{}'.format(GITUSER, GITPASS))
         parts.insert(1,'//')
         GITHOST = ''.join(x)
