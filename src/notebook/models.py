@@ -108,9 +108,11 @@ class Element:
             subelement = Element(val[index]['@id'], elements)
             if len(val) > 1:
                 print('Warning: More than one value was found in this reference.')
+                print('The list returned was: {}'.format(val))
         elif isinstance(val, str) or isinstance(val, int) or isinstance(val, float):
             subelement = val
         else:
+            print('Error when attempting to find key: {} with type: {}'.format(key,type(val)))
             raise NotImplementedError('Not sure how to handle this.')
         return subelement
 
