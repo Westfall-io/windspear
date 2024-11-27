@@ -1,6 +1,12 @@
 # CHANGELOG
 
+## v0.1.16 (2024-11-27)
+
 ## v0.1.15 (2024-11-05)
+
+### :bug:
+
+* :bug: Adding more debug as model hit unexpected errors ([`fb56bab`](https://github.com/Westfall-io/windspear/commit/fb56bab65fa2f69b73c77df485488b8c71f74a6e))
 
 ## v0.1.14 (2024-11-05)
 
