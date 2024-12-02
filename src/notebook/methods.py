@@ -353,7 +353,7 @@ def find_variable_value(elements, i, tn):
     # elements -- All elements
     # i -- This input element
     # tn -- The tool variable name
-    for ioe in i.get_subelements('ownedElement', elements):
+    for ioe in i.get_subelements('ownedElement', elements).get_elements():
         if ioe.get_type() == 'MetadataUsage':
             continue
 
