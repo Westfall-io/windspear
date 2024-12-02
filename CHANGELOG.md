@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.20 (2024-12-02)
+
+### :bug:
+
+* :bug: Better handling of subelements ([`5bcead1`](https://github.com/Westfall-io/windspear/commit/5bcead173a9d03c43e5c707670008fa91037c34f))
+
 ## v0.1.19 (2024-12-02)
 
 ### :bug:
