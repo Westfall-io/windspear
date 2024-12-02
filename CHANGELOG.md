@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.18 (2024-12-02)
+
+### :bug:
+
+* :bug: Improper import ([`8bd7952`](https://github.com/Westfall-io/windspear/commit/8bd7952db6aa012aae5e8c44110ec42d057ef97c))
+
 ## v0.1.17 (2024-12-02)
 
 ## v0.1.16 (2024-11-27)
