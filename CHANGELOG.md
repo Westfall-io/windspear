@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.24 (2024-12-02)
+
+### :bug:
+
+* :bug: Fixed an issue where indexing Elements was done incorrectly ([`a6df83b`](https://github.com/Westfall-io/windspear/commit/a6df83bffd8d0c8f7e2dc89e5bb82a40a3e7ba44))
+
 ## v0.1.23 (2024-12-02)
 
 ### :bug:
