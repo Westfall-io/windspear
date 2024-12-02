@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.19 (2024-12-02)
+
+### :bug:
+
+* :bug: Fixed underloaded function ([`88dc13d`](https://github.com/Westfall-io/windspear/commit/88dc13d08a046ef6cf9fcfa9737135a73ca85684))
+
 ## v0.1.18 (2024-12-02)
 
 ### :bug:
