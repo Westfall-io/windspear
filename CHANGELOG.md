@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.21 (2024-12-02)
+
+### :bug:
+
+* :bug: Fixed an issue where the updated function had no return results ([`a05a1e8`](https://github.com/Westfall-io/windspear/commit/a05a1e87a60425679b9ff429f98928aaf953f477))
+
 ## v0.1.20 (2024-12-02)
 
 ### :bug:
