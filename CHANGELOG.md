@@ -1,6 +1,12 @@
 # CHANGELOG
 
+## v0.1.17 (2024-12-02)
+
 ## v0.1.16 (2024-11-27)
+
+### :zap:
+
+* :zap: Moving element handling from sysml-windstorm ([`07eebc7`](https://github.com/Westfall-io/windspear/commit/07eebc7fe024aa1c782896c252299e32ceaf0386))
 
 ## v0.1.15 (2024-11-05)
 
