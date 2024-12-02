@@ -410,7 +410,7 @@ def handle_action_inputs(elements, i, a, actions):
     return actions
 
 
-def updated_model_parse_actions(a, prev_a, actions, v, verifications):
+def updated_model_parse_actions(elements, a, prev_a, actions, v, verifications):
     print('   Found an action -- {}'.format(a.get_id()))
     actions, prev_a, verifications = add_stored_data(
         a, prev_a, actions, v, verifications

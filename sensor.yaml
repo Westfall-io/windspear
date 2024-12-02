@@ -38,7 +38,7 @@ spec:
                 - "\nThis is the repo address:\n"
                 - ""
               - name: publish
-                image: docker.io/westfallio/windspear:v0.1.17
+                image: docker.io/westfallio/windspear:v0.1.18
                 command: ["python"]
                 env:
                 - name: GITHOST
