@@ -2,7 +2,7 @@ import logging
 
 logger = logging.getLogger("windspear.notebook.sysml")
 
-from models import Element, Elements
+from notebook.models import Element, Elements
 
 def handle_literals(element):
     # This function handles literals from SysMLv2 standard
