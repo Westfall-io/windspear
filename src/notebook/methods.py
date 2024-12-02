@@ -341,12 +341,7 @@ def find_variable_name(elements, i):
         tv = ioeoe.get_elements()[key]
 
         # Get the owned elements from this name metadata.
-        tn = tv.get_subelements('ownedElement', elements)
-
-        if len(tv) == 0:
-            raise NotImplementedError('Cannot find value for name')
-        if len(tv) > 1:
-            raise NotImplementedError('Too many values returned')
+        tn = tv.get_subelement('ownedElement', elements)
 
         # Set the name equal to the value
         tn = tn.get_key('value')
