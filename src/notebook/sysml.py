@@ -83,7 +83,7 @@ def handle_feature_chain(elements, e, tn):
     # e -- FeatureChainExpression Element
     # tn -- The current variable name
 
-    target = e.get_subelements('targetFeature', elements)
+    target = e.get_subelement('targetFeature', elements)
 
     logger.debug("         TargetElement: {}".format(target.get_type()))
     if target.get_key("chainingFeature") is None:

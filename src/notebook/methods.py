@@ -345,6 +345,8 @@ def find_variable_name(elements, i):
 
         # Set the name equal to the value
         tn = tn.get_key('value')
+        print('         Found variable named: {}'.format(tn))
+
         break
 
     return tn
