@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.28 (2024-12-02)
+
+### :zap:
+
+* :zap: Improving the workflow ([`31f21ec`](https://github.com/Westfall-io/windspear/commit/31f21ec07e648260b81345e652c944c913789211))
+
 ## v0.1.27 (2024-12-02)
 
 ### :bug:
