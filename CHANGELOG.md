@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## v0.1.26 (2024-12-02)
+
 ## v0.1.25 (2024-12-02)
 
 ### :bug:
+
+* :bug: Fixed an issue where a function was not called correctly ([`86ad123`](https://github.com/Westfall-io/windspear/commit/86ad1230e4e2d279e12a05c3e860f8c27bce104d))
 
 * :bug: Fixed an issue where a function handled the Elements class improperly ([`8d8565b`](https://github.com/Westfall-io/windspear/commit/8d8565bcebcbc00d7edd2c0984bf2ecd2fa5894c))
 
