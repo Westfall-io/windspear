@@ -313,7 +313,7 @@ def find_variable_name(elements, i):
     tn = None
     for ioe in i.get_subelements('ownedElement', elements).get_elements():
         # Ensure this is a metadata usage
-        if ioe.get_type() != 'MetaDataUsage':
+        if ioe.get_type() != 'MetadataUsage':
             print('         Skipping element {}.'.format(ioe.get_type()))
             continue
 
