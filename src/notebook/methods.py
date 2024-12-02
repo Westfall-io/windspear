@@ -338,7 +338,7 @@ def find_variable_name(elements, i):
             break
 
         # Grab the tool metadata from our search
-        tv = ioeoe[key]
+        tv = ioeoe.get_elements()[key]
 
         # Get the owned elements from this name metadata.
         tn = tv.get_subelements('ownedElement', elements)
