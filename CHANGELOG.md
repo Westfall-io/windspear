@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.22 (2024-12-02)
+
+### :zap:
+
+* :zap: Adding debug for tool variable name parsing ([`a8acb08`](https://github.com/Westfall-io/windspear/commit/a8acb08d973f55f58c7753238831d62df3514629))
+
 ## v0.1.21 (2024-12-02)
 
 ### :bug:
