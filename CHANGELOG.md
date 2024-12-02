@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.23 (2024-12-02)
+
+### :bug:
+
+* :bug: Fixed an issue where Metadata was spelled MetaData ([`e2d6cf7`](https://github.com/Westfall-io/windspear/commit/e2d6cf735e3519efe5e4755d241ebe90a9de3f65))
+
 ## v0.1.22 (2024-12-02)
 
 ### :zap:
