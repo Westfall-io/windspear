@@ -311,14 +311,16 @@ def collect_tool_execution_metadata(elements, a, actions):
 
 def find_variable_name(elements, i):
     tn = None
-    for ioe in i.get_subelements('ownedElement',elements).get_elements():
+    for ioe in i.get_subelements('ownedElement', elements).get_elements():
         # Ensure this is a metadata usage
         if ioe.get_type() != 'MetaDataUsage':
+            print('         Skipping element {}.'.format(ioe.get_type()))
             continue
 
         # Ensure this is the right type of metadata
         if ioe.get_subelement('metadataDefinition', elements) \
             .get_key('qualifiedName') != "AnalysisTooling::ToolVariable":
+            print('         Skipping metadata not associated with ToolVariable.')
             continue
 
         key = None
@@ -328,6 +330,7 @@ def find_variable_name(elements, i):
 
             # Ensure that the metadata has a element named name
             if v.get_key('name') != 'name':
+                print('         Skipping owned metadata with name {}.'.format(v.get_key('name')))
                 continue
 
             # We've found the metadata, stop searching for the key
@@ -383,6 +386,7 @@ def handle_action_inputs(elements, i, a, actions):
 
     # Check that something returns for the element
     if i.get_key('ownedElement') is None:
+        print('      Input had no metadata, skipping.')
         return actions
 
     # Find the tool variable name
