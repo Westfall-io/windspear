@@ -98,13 +98,13 @@ def handle_feature_chain(elements, e, tn):
         chain = target
     else:
         # Go to the end of the feature chain
-        chain = chain[-1]
+        chain = chain.get_elements()[-1]
         logger.debug("         ChainElement: {}".format(chain.get_type()))
 
     # Find the child element of the targeted feature
     tv = {tn:[]}
     chain_elements = chain.get_subelements("ownedElement", elements)
-    for feature in chain_elements:
+    for feature in chain_elements.get_elements():
         tv = handle_feature_element(elements, feature, tv)
         # Extra elements are probably multiplicity.
 

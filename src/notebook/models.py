@@ -119,9 +119,19 @@ class Element:
     def get_subelements(self, key, elements):
         val = self.get_key(key)
         if isinstance(val, list):
+            if len(val) == 0:
+                # If an empty list is returned, return an empty list
+                return []
+            # Return all elements
             return Elements(val, elements)
         else:
+            # Return one value
             return self.get_subelement(self, key, elements)
+
+    def get_elements(self):
+        # This function will mimic Elements by returning the element
+        # inside a list
+        return [self]
 
 class Elements:
     def __init__(self, ids, elements):

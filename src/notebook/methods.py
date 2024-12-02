@@ -311,7 +311,7 @@ def collect_tool_execution_metadata(elements, a, actions):
 
 def find_variable_name(elements, i):
     tn = None
-    for ioe in i.get_subelements('ownedElement',elements):
+    for ioe in i.get_subelements('ownedElement',elements).get_elements():
         # Ensure this is a metadata usage
         if ioe.get_type() != 'MetaDataUsage':
             continue
@@ -324,7 +324,7 @@ def find_variable_name(elements, i):
         key = None
         ioeoe = ioe.get_subelements('ownedElement', elements)
         # Go through all the metadata elements
-        for k,v in enumerate(ioeoe):
+        for k,v in enumerate(ioeoe.get_elements()):
 
             # Ensure that the metadata has a element named name
             if v.get_key('name') != 'name':
