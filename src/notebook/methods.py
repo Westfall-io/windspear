@@ -432,6 +432,8 @@ def updated_model_parse_actions(elements, a, prev_a, actions, v, verifications):
         # Check if this input has a tool name, otherwise drop
         actions = handle_action_inputs(elements, i, a, actions)
 
+    print('   Action variables: {}'.format(actions[a.get_id()]['tools']['variables']))
+
     return actions, prev_a, verifications
 
 ## DEPRECATED
