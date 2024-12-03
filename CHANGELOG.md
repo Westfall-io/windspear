@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.32 (2024-12-03)
+
+### :bug:
+
+* :bug: Fixed a function that used outdated variable names ([`138a138`](https://github.com/Westfall-io/windspear/commit/138a13865f2ffc0b7a0a595eb88ee9828b6afd73))
+
 ## v0.1.31 (2024-12-03)
 
 ### :bug:
