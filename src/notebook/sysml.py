@@ -21,7 +21,7 @@ def handle_literals(element):
     return True, v
 
 def handle_operator_expression(elements, feature, tv):
-    for arg in feature.get_subelements("argument").get_elements():
+    for arg in feature.get_subelements("argument", elements).get_elements():
         literal, value = handle_literals(arg)
         if literal:
             tv[list(tv.keys())[0]].append(value)
