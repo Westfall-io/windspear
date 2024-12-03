@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.33 (2024-12-03)
+
+### :bug:
+
+* :bug: Fixed an issue with Elements class usage ([`dca2568`](https://github.com/Westfall-io/windspear/commit/dca25685adc1b282fe82bc2ffe77103c58944994))
+
 ## v0.1.32 (2024-12-03)
 
 ### :bug:
