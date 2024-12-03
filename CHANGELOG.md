@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.36 (2024-12-03)
+
+### :zap:
+
+* :zap: Adding more debug ([`09b80bd`](https://github.com/Westfall-io/windspear/commit/09b80bd9f1350da806a9a9a5407f4c0cae90b2d6))
+
 ## v0.1.35 (2024-12-03)
 
 ### :bug:
