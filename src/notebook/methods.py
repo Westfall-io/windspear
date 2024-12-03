@@ -310,7 +310,7 @@ def collect_tool_execution_metadata(elements, a, actions):
     return actions
 
 def find_variable_name(elements, i):
-    tn = None
+    tvn = None
     for ioe in i.get_subelements('ownedElement', elements).get_elements():
         # Ensure this is a metadata usage
         if ioe.get_type() != 'MetadataUsage':
@@ -344,12 +344,12 @@ def find_variable_name(elements, i):
         tn = tv.get_subelement('ownedElement', elements)
 
         # Set the name equal to the value
-        tn = tn.get_key('value')
-        print('         Found variable named: {}'.format(tn))
+        tvn = tn.get_key('value')
+        print('         Found variable named: {}'.format(tvn))
 
         break
 
-    return tn
+    return tvn
 
 def find_variable_value(elements, i, tn):
     # elements -- All elements
@@ -402,10 +402,10 @@ def handle_action_inputs(elements, i, a, actions):
     if not 'variables' in actions[a.get_id()]['tools']:
         actions[a.get_id()]['tools']['variables'] = {}
 
-    for tv in tool_variables:
-        actions[a.get_id()]['tools']['variables'][tv] = {
-            'value': val_variable,
-            'units': units
+    for name in list(tv.keys()):
+        actions[a.get_id()]['tools']['variables'][name] = {
+            'value': tv[name],
+            'units': "u.one"
         }
 
     return actions
