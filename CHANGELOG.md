@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.31 (2024-12-03)
+
+### :bug:
+
+* :bug: Removing references to logger ([`bfad083`](https://github.com/Westfall-io/windspear/commit/bfad083f54993b73d5747eeb9e70ae903b9f0a4f))
+
 ## v0.1.30 (2024-12-03)
 
 ### :bug:
