@@ -87,7 +87,7 @@ def handle_feature_chain(elements, e, tn):
         print("No chaining feature found.")
         raise AttributeError
 
-    chain = target.get_subelements("chainingFeature", elements)
+    chain = target.get_subelements("chainingFeature", elements).get_elements()
 
     if len(chain) == 0:
         # We're at the end of the feature chain
