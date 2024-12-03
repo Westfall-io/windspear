@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.29 (2024-12-03)
+
+### :bug:
+
+* :bug: Fixed an issue with Elements class handling ([`009b0f9`](https://github.com/Westfall-io/windspear/commit/009b0f900f3e0ea89be885d304ec69e6c83d1786))
+
 ## v0.1.28 (2024-12-02)
 
 ### :zap:
