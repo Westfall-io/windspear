@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.34 (2024-12-03)
+
+### :bug:
+
+* :bug: Fixed an issue with a mishandled empty array returning ([`6be6405`](https://github.com/Westfall-io/windspear/commit/6be640556cd55ff696b147e33ad0a8679330ac76))
+
 ## v0.1.33 (2024-12-03)
 
 ### :bug:

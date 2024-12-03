@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "windspear"
-version = "0.1.33"
+version = "0.1.34"
 description = "Model Sensor Workflow"
 authors = ["Christopher Cox"]
 readme = "README.md"
@@ -60,7 +60,7 @@ patch_tags = [
 
 [project]
 name = "windstorm-dwarven"
-version = "0.1.33"
+version = "0.1.34"
 authors = [
   { name="Christopher Cox", email="chris.cox@westfall.io" },
 ]
