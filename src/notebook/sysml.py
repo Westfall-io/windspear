@@ -3,16 +3,16 @@ from notebook.models import Element, Elements
 def handle_literals(element):
     # This function handles literals from SysMLv2 standard
     if element.get_type() == "LiteralInteger":
-        logger.info("         Value: {}".format(element.get_key("value")))
+        print("         Value: {}".format(element.get_key("value")))
         v = element.get_key("value")
     elif element.get_type() == "LiteralString":
-        logger.info("         Value: {}".format(element.get_key("value")))
+        print("         Value: {}".format(element.get_key("value")))
         v = element.get_key("value")
     elif element.get_type() == "LiteralRational":
-        logger.info("         Value: {}".format(element.get_key("value")))
+        print("         Value: {}".format(element.get_key("value")))
         v = element.get_key("value")
     elif element.get_type() == "LiteralBoolean":
-        logger.info("         Value: {}".format(element.get_key("value")))
+        print("         Value: {}".format(element.get_key("value")))
         v = element.get_key("value")
     else:
         # This function returns a True/False whether it was parsed as a literal
