@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.30 (2024-12-03)
+
+### :bug:
+
+* :bug: Fixed an issue with underloaded function ([`bbc9760`](https://github.com/Westfall-io/windspear/commit/bbc97607fa5785753d212eed15089d4d7292d08d))
+
 ## v0.1.29 (2024-12-03)
 
 ### :bug:
