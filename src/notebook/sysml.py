@@ -1,7 +1,3 @@
-import logging
-
-logger = logging.getLogger("windspear.notebook.sysml")
-
 from notebook.models import Element, Elements
 
 def handle_literals(element):
@@ -25,7 +21,7 @@ def handle_literals(element):
     return True, v
 
 def handle_operator_expression(elements, feature, tv):
-    for arg in feature.get_subelements("argument"):
+    for arg in feature.get_subelements("argument").get_elements():
         literal, value = handle_literals(arg)
         if literal:
             tv[list(tv.keys())[0]].append(value)
@@ -34,10 +30,10 @@ def handle_operator_expression(elements, feature, tv):
             # This is likely a list of elements
             tv = handle_operator_expression(elements, arg, tv)
         else:
-            logger.warning(
+            print(
                 "Could not find a valid type for this toolvariable, skipping."
             )
-            logger.warning(
+            print(
                 "Please consider submitting this issue to github. The type was {}".format(
                     arg.get_type()
                 )
@@ -48,7 +44,7 @@ def handle_operator_expression(elements, feature, tv):
 
 def handle_feature_element(elements, feature, tv):
     fetype = feature.get_type()
-    logger.info("         Target Element: {}".format(fetype))
+    print("         Target Element: {}".format(fetype))
 
     # Get the tool variable name again
     tn = list(tv.keys())[0]
@@ -63,13 +59,13 @@ def handle_feature_element(elements, feature, tv):
         ###### END LOOP for each argument
     elif fetype == "Multiplicity":
         # Don't do anything for this right now.
-        logger.info("Skipping found multiplicity.")
+        print("Skipping found multiplicity.")
     elif fetype == "FeatureChainExpression":
         # This is a reference, do this over again and return whatever the end is
         return handle_feature_chain(elements, feature, tn)
     else:
-        logger.warning("Could not find a valid type for this toolvariable, skipping.")
-        logger.warning(
+        print("Could not find a valid type for this toolvariable, skipping.")
+        print(
             "Please consider submitting this issue to github. The type was {}".format(
                 fetype
             )
@@ -85,10 +81,10 @@ def handle_feature_chain(elements, e, tn):
 
     target = e.get_subelement('targetFeature', elements)
 
-    logger.debug("         TargetElement: {}".format(target.get_type()))
+    print("         TargetElement: {}".format(target.get_type()))
     if target.get_key("chainingFeature") is None:
         # No chaining feature
-        logger.error("No chaining feature found.")
+        print("No chaining feature found.")
         raise AttributeError
 
     chain = target.get_subelements("chainingFeature", elements)
@@ -99,7 +95,7 @@ def handle_feature_chain(elements, e, tn):
     else:
         # Go to the end of the feature chain
         chain = chain.get_elements()[-1]
-        logger.debug("         ChainElement: {}".format(chain.get_type()))
+        print("         ChainElement: {}".format(chain.get_type()))
 
     # Find the child element of the targeted feature
     tv = {tn:[]}
