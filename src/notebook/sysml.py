@@ -52,7 +52,8 @@ def handle_feature_element(elements, feature, tv):
     literal, v = handle_literals(feature)
     if literal:
         # Skip the rest of this code if it's been handled.
-        return tv[tn].append(v)
+        tv[tn].append(v)
+        return tv
 
     if fetype == "OperatorExpression":
         return handle_operator_expression(elements, feature, tv)
