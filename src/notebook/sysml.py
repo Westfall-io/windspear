@@ -87,15 +87,21 @@ def handle_feature_chain(elements, e, tn):
         print("No chaining feature found.")
         raise AttributeError
 
-    chain = target.get_subelements("chainingFeature", elements).get_elements()
+    chain = target.get_subelements("chainingFeature", elements)
 
-    if len(chain) == 0:
-        # We're at the end of the feature chain
-        chain = target
-    else:
+    if not isinstance(chain, list):
+        chain = chain.get_elements()
+
         # Go to the end of the feature chain
-        chain = chain.get_elements()[-1]
+        chain = chain[-1]
         print("         ChainElement: {}".format(chain.get_type()))
+    else:
+        if len(chain) == 0:
+            # We're at the end of the feature chain
+            chain = target
+        else:
+            print("         ChainElement Error Returned: {}".format(chain))
+            raise NotImplementedError
 
     # Find the child element of the targeted feature
     tv = {tn:[]}
