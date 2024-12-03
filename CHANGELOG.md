@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.1.35 (2024-12-03)
+
+### :bug:
+
+* :bug: Fixed an issue where the return was a None ([`15159c3`](https://github.com/Westfall-io/windspear/commit/15159c3f6fc9e790ebe51e0f88d58cab04810a9a))
+
 ## v0.1.34 (2024-12-03)
 
 ### :bug:
