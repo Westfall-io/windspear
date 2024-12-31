@@ -4,14 +4,7 @@
 
 ### :zap:
 
-* :zap: Adding more debug ([`09b80bd`](https://github.com/Westfall-io/windspear/commit/09b80bd9f1350da806a9a9a5407f4c0cae90b2d6))
-
-## v0.1.35 (2024-12-03)
-
-### :zap:
-
 * :zap: Improving the workflow ([`31f21ec`](https://github.com/Westfall-io/windspear/commit/31f21ec07e648260b81345e652c944c913789211))
-* :zap: Adding debug for tool variable name parsing ([`a8acb08`](https://github.com/Westfall-io/windspear/commit/a8acb08d973f55f58c7753238831d62df3514629))
 * :zap: Moving element handling from sysml-windstorm ([`07eebc7`](https://github.com/Westfall-io/windspear/commit/07eebc7fe024aa1c782896c252299e32ceaf0386))
 
 ### :bug:
