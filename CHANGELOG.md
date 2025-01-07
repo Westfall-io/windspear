@@ -1,5 +1,7 @@
 # CHANGELOG
 
+<!-- version list -->
+
 ## v0.1.35 (2024-12-03)
 
 ### :zap:
