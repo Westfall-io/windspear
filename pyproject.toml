@@ -63,7 +63,7 @@ prerelease_token = "dev"
 
 [project]
 name = "windstorm-dwarven"
-version = "0.2.1"
+version = "0.2.2-dev.1"
 authors = [
   { name="Christopher Cox", email="chris.cox@westfall.io" },
 ]

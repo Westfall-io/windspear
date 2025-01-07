@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.2.2-dev.1 (2025-01-07)
+
+### :lock:
+
+* :lock: Adding security fixes for gitpython ([`c58e0a5`](https://github.com/Westfall-io/windspear/commit/c58e0a52e861b44592f46a4d320cde10671ad05e))
+
+### Other
+
+* :construction_worker: Adding dev workflow ([`2a2be39`](https://github.com/Westfall-io/windspear/commit/2a2be39c5f12e2559f68d0af9bbd401fcdde194a))
+
 ## v0.2.1 (2025-01-07)
 
 ## v0.2.0 (2025-01-07)
