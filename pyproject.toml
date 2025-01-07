@@ -1,3 +1,11 @@
+[tool.poetry]
+name = "windspear"
+version = "0.2.0"
+description = "Model Sensor Workflow"
+authors = ["Christopher Cox"]
+readme = "README.md"
+packages = [{ include = "main", from = "src" }]
+
 [tool.semantic_release]
 version_toml=["pyproject.toml:project.version",]
 version_pattern = ["sensor.yaml:westfallio/windspear:v{version}",]
@@ -55,7 +63,7 @@ prerelease_token = "dev"
 
 [project]
 name = "windstorm-dwarven"
-version = "0.1.35"
+version = "0.2.0"
 authors = [
   { name="Christopher Cox", email="chris.cox@westfall.io" },
 ]
