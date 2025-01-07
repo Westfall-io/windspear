@@ -1,6 +1,6 @@
 # CHANGELOG
 
-<!-- version list -->
+## v0.2.1 (2025-01-07)
 
 ## v0.2.0 (2025-01-07)
 
@@ -9,6 +9,8 @@
 * :sparkles: Migrating from minikube version to fully hosted k8s ([`32b324f`](https://github.com/Westfall-io/windspear/commit/32b324fb64421a8f980341aa80779fe36c725eba))
 
 ### :zap:
+
+* :zap: Improving changelog generation ([`77a65c9`](https://github.com/Westfall-io/windspear/commit/77a65c9bdb3985222fa7ec90c77a2abfe4cad4e4))
 
 * :zap: Adding more debug ([`09b80bd`](https://github.com/Westfall-io/windspear/commit/09b80bd9f1350da806a9a9a5407f4c0cae90b2d6))
 
