@@ -14,3 +14,10 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# notebook package: utilities for extracting and parsing SysML models from
+# Jupyter notebooks. Modules in this package provide functions to run a
+# notebook kernel, search for model artifacts, and convert them into the
+# internal representations used by the rest of the pipeline.
+
+#TODO either make a new module or modify this module to read in sysml files instead of notebooks

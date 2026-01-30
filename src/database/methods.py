@@ -25,7 +25,19 @@ from sqlalchemy.orm import Session
 from database.models import Model_Repo, Commits, Models, Elements, \
     Models_Elements, Reqts, Verifications, Actions
 
+# database/methods.py: Database helper functions for persisting commit,
+# model, element, requirement, verification, and action data.
+#
+# This module uses SQLAlchemy ORM models defined in `database.models` and
+# provides convenience functions that create a connection/engine, insert or
+# update commit records, persist parsed models and their associated elements,
+# and store requirement/verification/action records derived from parsed
+# notebooks.
+
 def connect():
+    # Establish a SQLAlchemy connection and engine using configuration from
+    # `env.py`. Returns a `(connection, engine)` tuple. Callers are
+    # responsible for closing the connection and disposing the engine.
     db_type = "postgresql"
     user = DBUSER
     passwd = DBPASS
@@ -39,6 +51,9 @@ def connect():
     return conn, engine
 
 def push_commit_completed(commit_id):
+    # Mark a specific commit record as processed/completed in the database.
+    # This is used after processing a commit's models and persisting all
+    # related artifacts.
     c, engine = connect()
     with Session(engine) as session:
         result = session \
@@ -50,6 +65,10 @@ def push_commit_completed(commit_id):
     engine.dispose()
 
 def insert_commit_data(repopath, default_branch, ref, commit, commit_date):
+    # Insert or refresh a commit entry for `repopath` and the given `ref`
+    #/`commit`. If the commit already exists it's marked unprocessed and
+    # any previous model/action/verification rows for that commit are
+    # deleted so the new processing run can re-publish fresh data.
     c, engine = connect()
     with Session(engine) as session:
 
@@ -143,6 +162,9 @@ def insert_commit_data(repopath, default_branch, ref, commit, commit_date):
     return cdb_id
 
 def insert_model_data(commit_id, models, elements):
+    # Persist parsed model and element records for a given commit. This
+    # function inserts or updates `Elements`, `Models`, and mapping rows in
+    # `Models_Elements` to link models to the elements they reference.
     c, engine = connect()
     with Session(engine) as session:
         # Grab the commit id number from the DB.
@@ -277,6 +299,10 @@ def insert_model_data(commit_id, models, elements):
     engine.dispose()
 
 def insert_req_ver_actions(commit_id, requirements, verifications, actions):
+    # Persist requirements, verifications, and actions derived from parsed
+    # models. The function looks up the corresponding `Elements` rows and
+    # creates `Reqts`, `Verifications`, and `Actions` ORM objects linked to
+    # the provided `commit_id`.
     c, engine = connect()
     with Session(engine) as session:
         print('Publishing requirements.')

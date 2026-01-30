@@ -22,7 +22,14 @@ import copy
 
 import git
 
+# gitrepo/methods.py: helpers to clone and checkout git repositories for
+# processing. Functions here wrap `GitPython` calls to obtain repository
+# contents and commit metadata needed by the rest of the pipeline.
+
 def checkout_branch_commit(ref, commit, repopath):
+    # Clone the repository URL (optionally injecting credentials), checkout
+    # the requested branch, collect commit metadata, then check out the
+    # specific commit for analysis.
     print(repopath, GITHOST)
     if GITUSER == '':
         repopath = GITHOST + repopath
@@ -33,7 +40,10 @@ def checkout_branch_commit(ref, commit, repopath):
         parts.insert(1,'//')
         repopath = ''.join(parts) + repopath
     print(repopath)
+    # Clone the repo into the current working directory
     git.Git(".").clone(repopath)
+    # Normalize the repo path to extract domain/owner/repo for locating
+    # the cloned directory on disk.
     httppath = repopath[repopath.find('/')+2:]
     httpparts = httppath.split("/")
     domain = httpparts[0]
@@ -47,6 +57,7 @@ def checkout_branch_commit(ref, commit, repopath):
     return dir_path, branch, commit_data
 
 def get_commit_data(repo):
+    # Return a list of recent commits with ISO8601 timestamps and hex SHA.
     format = '%Y-%m-%dT%H:%M:%S%z'
     commits = repo.iter_commits(max_count=100)
     commit_data = []

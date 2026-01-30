@@ -31,13 +31,38 @@ from notebook.jupyter import _base_nb, _make_nb_cell
 from notebook.action import add_stored_data
 from notebook.sysml import handle_literals, handle_feature_chain
 
+# notebook/methods.py: Core routines to discover, execute, and parse SysML
+# models embedded in Jupyter notebooks. This module drives the notebook
+# execution (via `papermill`), decodes exported element JSON, and walks
+# the exported structures to build normalized `requirements`,
+# `verifications`, and `actions` dictionaries for persistence.
+
 def hash(string):
+    # Compute a stable integer hash for the given string using MD5.
     return int(hashlib.md5(string.encode('utf-8')).hexdigest(), 16)
 
 def search_models(dir_path, DEBUG=False):
+    """Discover and execute SysML model cells inside notebooks.
+
+    Walk `dir_path` looking for `.ipynb` files that use the SysML (or
+    `sos`) kernel. For each notebook this function:
+        - extracts SysML code cells (ignoring magic lines starting with `%`),
+        - builds a temporary notebook containing only those cells,
+        - executes the temporary notebook with `papermill` (kernel `sysml`) so
+            that exported model elements are produced in the cell outputs,
+        - decodes the exported JSON (base64 embedded in HTML output) and
+            attaches exported element payloads to the corresponding model entry.
+
+    Returns a tuple (valid_models, all_elements) where `valid_models` maps
+    notebook filenames to the parsed models that successfully exported
+    element JSON, and `all_elements` is a dictionary of all exported element
+    objects keyed by their element id.
+    """
     # Search for models
     all_models = {}
+    # Notebook kernels we care about (SysML and optional sos interoperability)
     languages = ["sos", "SysML"]
+    
     # Iterate directory
     for (dir_path, dir_names, file_names) in os.walk(dir_path):
         for name in file_names:
@@ -237,7 +262,15 @@ def search_models(dir_path, DEBUG=False):
     return valid_models, all_elements
 
 def collect_tool_execution_metadata(elements, a, actions):
-    # If there are no owned Elements
+    """Collect tool execution metadata (tool name and URI) for an action.
+
+    The SysML export describes tool metadata via `MetadataUsage` and
+    `ReferenceUsage` sub-elements. This function finds those definitions and
+    extracts the declared `toolName` and `uri`, then stores them into the
+    `actions` structure under `tools.harbor` or `tools.artifacts` depending
+    on the configured tool names in `env.py`.
+    """
+    # If there are no owned Elements there is nothing to do
     if a.get_key('ownedElement') is None:
         return []
 
@@ -310,6 +343,12 @@ def collect_tool_execution_metadata(elements, a, actions):
     return actions
 
 def find_variable_name(elements, i):
+    """Extract the declared tool variable name from an input element.
+
+    The SysML export encodes tool variable names as a `MetadataUsage` whose
+    owned elements include a `name` entry. Return the string value or `None`
+    if not found.
+    """
     tvn = None
     for ioe in i.get_subelements('ownedElement', elements).get_elements():
         # Ensure this is a metadata usage
@@ -325,10 +364,10 @@ def find_variable_name(elements, i):
 
         key = None
         ioeoe = ioe.get_subelements('ownedElement', elements)
-        # Go through all the metadata elements
+        # Go through all the metadata elements looking for name
         for k,v in enumerate(ioeoe.get_elements()):
 
-            # Ensure that the metadata has a element named name
+            # Ensure that the metadata has an element named name
             if v.get_key('name') != 'name':
                 print('         Skipping owned metadata with name {}.'.format(v.get_key('name')))
                 continue
@@ -352,11 +391,19 @@ def find_variable_name(elements, i):
     return tvn
 
 def find_variable_value(elements, i, tn):
+    """Given an input element `i`, locate the value for tool variable `tn`.
+
+    This inspects owned elements of the input to determine whether the value
+    is a literal, a feature chain (reference to an output), or something
+    else. Returns a dict mapping `tn` to the discovered value (or an empty
+    string when a value couldn't be found).
+    """
     # elements -- All elements
     # i -- This input element
     # tn -- The tool variable name
     for ioe in i.get_subelements('ownedElement', elements).get_elements():
         if ioe.get_type() == 'MetadataUsage':
+            # Skip metadata usage wrappers — these don't contain the value
             continue
 
         ename = ioe.get_key("declaredName")
@@ -366,19 +413,30 @@ def find_variable_value(elements, i, tn):
 
         print("      Element: {}".format(ename))
 
+        # If the element is a literal, extract it directly
         literal, v = handle_literals(ioe)
         if literal:
             # Just go to the next element, it's been handled.
             return {tn: v}
 
+        # If the value is produced by a feature chain (e.g. referencing an
+        # action output), delegate to the feature-chain handler
         if ioe.get_type() == "FeatureChainExpression":
             return handle_feature_chain(elements, ioe, tn)
         else:
-            # No chaining feature
+            # No chaining feature and not a literal — return an empty value
             print("         Skipping over element: {}".format(ioe.get_type()))
             return {tn: ''}
 
 def handle_action_inputs(elements, i, a, actions):
+    """Extract tool variable values for a given input and attach them to
+    the `actions` dict under `tools.variables`.
+
+    Steps:
+      - locate the tool variable name (metadata)
+      - locate the tool variable value (literal, feature chain, etc.)
+      - attach the discovered value and chosen units to `actions`
+    """
     print('      Checking for tool variable name metadata')
 
     # Check that something returns for the element
@@ -403,6 +461,7 @@ def handle_action_inputs(elements, i, a, actions):
         actions[a.get_id()]['tools']['variables'] = {}
 
     for name in list(tv.keys()):
+        # Attach with default units; callers may interpret units specially
         actions[a.get_id()]['tools']['variables'][name] = {
             'value': tv[name],
             'units': "u.one"
@@ -412,6 +471,13 @@ def handle_action_inputs(elements, i, a, actions):
 
 
 def updated_model_parse_actions(elements, a, prev_a, actions, v, verifications):
+    """Process a discovered action usage and collect stored data and tooling.
+
+    This updates the `actions` structure with any stored data (via
+    `add_stored_data`), collects configured tooling metadata (container and
+    artifacts URIs) and, when both tooling entries exist, extracts any
+    declared variables from the action inputs.
+    """
     print('   Found an action -- {}'.format(a.get_id()))
     actions, prev_a, verifications = add_stored_data(
         a, prev_a, actions, v, verifications
@@ -419,13 +485,14 @@ def updated_model_parse_actions(elements, a, prev_a, actions, v, verifications):
     print('   Searching if this action has metadata associated with tooling.')
     actions = collect_tool_execution_metadata(elements, a, actions)
 
+    # If required tool metadata is missing, bail out early
     if actions[a.get_id()]['tools']['harbor'] is None or \
         actions[a.get_id()]['tools']['artifacts'] is None:
         return actions, prev_a, verifications
 
     print('   Action has required tool metadata, grabbing variables.')
 
-    # Make a new element list with all inputs
+    # Make a new element list with all inputs and extract variable values
     inputs = Elements(a.get_key('input'), elements)
 
     for i in inputs.get_elements():
@@ -438,6 +505,12 @@ def updated_model_parse_actions(elements, a, prev_a, actions, v, verifications):
 
 ## DEPRECATED
 def alpha_model_parse_actions(elements, a, prev_a, actions, v, verifications):
+    """Deprecated parsing path retained for historical reasons.
+
+    This function contains an older approach to extracting tool metadata
+    and variables from action usages. New code should use
+    `updated_model_parse_actions` instead.
+    """
     print('   Found an action -- {}'.format(a.get_id()))
     actions, prev_a, verifications = add_stored_data(
         a, prev_a, actions, v, verifications
@@ -692,6 +765,13 @@ def alpha_model_parse_actions(elements, a, prev_a, actions, v, verifications):
     return actions, verifications
 
 def handle_verification(element_id, e, elements, actions, verifications):
+    """Register a verification and parse its child actions.
+
+    Creates an entry in `verifications` with basic metadata and then finds
+    associated `ActionUsage` sub-elements (via feature memberships). Each
+    discovered action is processed with the updated parsing routine which
+    collects tool metadata and variables.
+    """
     # Create a verification
     print('Found a verification -- {}'.format(element_id))
     v = e
@@ -703,7 +783,7 @@ def handle_verification(element_id, e, elements, actions, verifications):
         'actions': []
     }
 
-    # Check for actions
+    # Find action usages that are members of this verification
     print('Searching for actions.')
     subactions = [
         x.get_subelement(
@@ -735,6 +815,13 @@ def handle_verification(element_id, e, elements, actions, verifications):
     return actions, verifications
 
 def handle_requirement(e, requirements):
+    """Register a requirement usage when it represents a real requirement.
+
+    The function filters out internal/object names that include `::obj` and
+    ensures the qualified name looks like a hierarchical SysML qualified
+    name (contains `::`). If valid, the requirement's short/declared/qualified
+    names are stored in the `requirements` mapping.
+    """
     if not '::' in e.get_key('qualifiedName'):
         return requirements
 
@@ -750,27 +837,35 @@ def handle_requirement(e, requirements):
     return requirements
 
 def parse_models(models, elements):
+    """Top-level parser: convert exported elements into requirements,
+    verifications and actions structures.
+
+    Iterates over each exported element, classifies it (verification or
+    requirement) and dispatches to the appropriate handler. Returns three
+    dictionaries: `requirements`, `verifications`, and `actions` that are
+    suitable for insertion into the database layer.
+    """
     verifications = {}
     requirements = {}
     actions = {}
 
-    # Go through each element
+    # Go through each element and classify
     for element_id in elements:
         # Make the element a class so we have functions
         e = Element(element_id, elements)
 
-        # If this is a verification
+        # If this is a verification, parse its actions and metadata
         if e.istype('VerificationCaseDefinition'):
             actions, verifications = handle_verification(
                 element_id, e, elements, actions, verifications
             )
 
-        # If this is a requirement
+        # If this is a requirement usage, record it
         elif e.istype('RequirementUsage') and \
             e.get_key('qualifiedName')[-5:] != '::obj':
             requirements = handle_requirement(e, requirements)
 
-
+    # Print a summary to aid debugging (keeps original behavior)
     print('\n\n\n\n---------------------')
     print('Listing all verifications found.')
     for element_id in verifications:

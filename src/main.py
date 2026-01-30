@@ -20,10 +20,21 @@ from env import *
 import time
 start_time = time.time()
 
+# main.py: Entry point for processing a Git webhook / repository snapshot.
+#
+# This module coordinates the high-level workflow:
+# 1. Check out the repository at the requested ref/commit.
+# 2. Record commit metadata to the local database.
+# 3. Extract SysML models from notebooks, parse them for requirements,
+#    verifications, and actions, and persist those to the database.
+# 4. Notify an external webhook when processing completes.
+
 from datetime import datetime
 import dateutil
 
 def getDateTimeFromISO8601String(s):
+    # Parse an ISO8601 timestamp string into a Python `datetime` using
+    # `dateutil.parser.parse` and return the resulting `datetime` object.
     d = dateutil.parser.parse(s)
     return d
 
@@ -51,6 +62,13 @@ def main(ref, commit, repopath, default_branch):
         repopath='gitea_admin/test_workflow'
     if default_branch == '':
         default_branch = 'main'
+    # Workflow:
+    # - Download the repository and checkout the branch/commit for analysis
+    # - Record commit metadata to the database
+    # - Extract models from the notebook files in the repository
+    # - Parse and persist requirements/verifications/actions
+    # - Notify downstream systems via a webhook when finished
+    
     # Download repo and set to correct branch
     # Grab commits on this branch and dates
     # Then set to commit in webhook

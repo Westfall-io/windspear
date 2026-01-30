@@ -14,3 +14,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# gitrepo package: utilities for cloning and checking out remote git
+# repositories used as model sources. The helpers wrap GitPython to produce
+# a local checkout and commit metadata for processing.

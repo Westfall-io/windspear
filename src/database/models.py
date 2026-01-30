@@ -21,9 +21,17 @@ import sqlalchemy as db
 from sqlalchemy.orm import DeclarativeBase, Mapped, \
     mapped_column, MappedAsDataclass, relationship
 
+# database/models.py: SQLAlchemy ORM model definitions for persistence.
+#
+# Each class maps to a table used by the processing pipeline to store
+# repository metadata, commits, parsed models, elements, and the
+# relationships between models and elements, as well as requirements,
+# verifications, and actions derived from parsed SysML artifacts.
+
 class Base(MappedAsDataclass, DeclarativeBase):
     """subclasses will be converted to dataclasses"""
 
+# ORM for repository metadata (full name, default branch)
 class Model_Repo(Base):
     __tablename__ = "model_repo"
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -34,6 +42,7 @@ class Model_Repo(Base):
         self.default_branch = default_branch
         return self
 
+# ORM for commit records; stores ref/commit, processed flag and timestamp
 class Commits(Base):
     __tablename__ = "commits"
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -42,6 +51,7 @@ class Commits(Base):
     processed: Mapped[bool] = mapped_column(db.Boolean())
     date: Mapped[datetime] = mapped_column(default=None)
 
+# ORM for parsed models extracted from notebooks
 class Models(Base):
     __tablename__ = "models"
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -58,6 +68,8 @@ class Models(Base):
         self.id = id
         return self
 
+# ORM for individual elements parsed from notebooks; elements are
+# referenced by models and requirements/verifications/actions
 class Elements(Base):
      __tablename__ = "elements"
      id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -70,6 +82,7 @@ class Elements(Base):
          self.id = id
          return self
 
+# Join table linking Models to Elements for a specific commit
 class Models_Elements(Base):
     __tablename__ = "models_elements"
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -77,6 +90,7 @@ class Models_Elements(Base):
     element_id: Mapped[int] = mapped_column(db.ForeignKey("elements.id"))
     commit_id: Mapped[int] = mapped_column(db.ForeignKey("commits.id"))
 
+# ORM for Requirement records derived from elements
 class Reqts(Base):
     __tablename__ = "requirements"
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -86,6 +100,7 @@ class Reqts(Base):
     qualifiedName: Mapped[str] = mapped_column(db.String(255))
     element_id: Mapped[int] = mapped_column(db.ForeignKey("elements.id"))
 
+# ORM for Verification records which reference requirements and elements
 class Verifications(Base):
     __tablename__ = "verifications"
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
@@ -94,6 +109,7 @@ class Verifications(Base):
     requirement_id: Mapped[int] = mapped_column(db.ForeignKey("requirements.id"))
     attempted: Mapped[bool] = mapped_column(db.Boolean())
 
+# ORM for Action records (tool executions, artifacts, dependencies)
 class Actions(Base):
     __tablename__ = "actions"
     id: Mapped[int] = mapped_column(init=False, primary_key=True)

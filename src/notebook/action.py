@@ -1,4 +1,17 @@
 def add_stored_data(a, prev_a, actions, v, verifications):
+    # add_stored_data: Collect action metadata into the running
+    # in-memory structures used by the pipeline.
+    #
+    # Parameters:
+    # - a: parsed action object
+    # - prev_a: id of the previous action (used to set dependencies)
+    # - actions: dict accumulating action records
+    # - v: verification container this action belongs to
+    # - verifications: dict accumulating verification records
+    #
+    # The function appends action metadata to `verifications` and creates
+    # a normalized entry in `actions` with placeholders for tool URIs
+    # and variables.
     # Consider this a sim run
     verifications[v.get_id()]['actions'].append({
         'id' : a.get_id(),

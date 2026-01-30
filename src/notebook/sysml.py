@@ -1,5 +1,9 @@
 from notebook.models import Element, Elements
 
+# notebook/sysml.py: Helpers for interpreting exported SysMLv2 element
+# structures. These functions detect literal values, traverse feature chains,
+# and normalize values used as tool variables or action outputs.
+
 def handle_literals(element):
     # This function handles literals from SysMLv2 standard
     if element.get_type() == "LiteralInteger":
@@ -21,6 +25,8 @@ def handle_literals(element):
     return True, v
 
 def handle_operator_expression(elements, feature, tv):
+    # Walk operator expression arguments, extracting literal values and
+    # recursing for nested operator expressions.
     for arg in feature.get_subelements("argument", elements).get_elements():
         literal, value = handle_literals(arg)
         if literal:
@@ -43,6 +49,9 @@ def handle_operator_expression(elements, feature, tv):
 
 
 def handle_feature_element(elements, feature, tv):
+    # Handle an element that appears inside a feature chain. Depending on
+    # its type (literal, operator expression, feature chain, etc.) extract
+    # values into the `tv` mapping under the tool variable name.
     fetype = feature.get_type()
     print("         Target Element: {}".format(fetype))
 

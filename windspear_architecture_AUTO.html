@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windspear Architecture - Block Diagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
+            color: #e4e7eb;
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #00d9ff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #64748b;
+            letter-spacing: 0.05em;
+        }
+
+        .diagram-wrapper {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* SVG Styles */
+        .subsystem {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .subsystem:hover {
+            filter: brightness(1.2);
+        }
+
+        .subsystem:hover rect {
+            stroke-width: 3;
+        }
+
+        .flow-arrow {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .component-box {
+            transition: all 0.3s ease;
+        }
+
+        .component-box:hover {
+            filter: brightness(1.15);
+        }
+
+        .title-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .label-text {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .detail-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .legend {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(100, 116, 139, 0.2);
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .info-panel {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 8px;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+
+        .info-panel h3 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #00d9ff;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .info-panel p {
+            line-height: 1.6;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Windspear System</h1>
+            <p class="subtitle">High-Level Architecture Block Diagram</p>
+        </header>
+
+        <div class="diagram-wrapper">
+            <svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Gradient Definitions -->
+                    <linearGradient id="gradMain" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#1e40af;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.8" />
+                    </linearGradient>
+                    
+                    <linearGradient id="gradConfig" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:0.8" />
+                    </linearGradient>
+                    
+                    <linearGradient id="gradGit" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#059669;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.8" />
+                    </linearGradient>
+                    
+                    <linearGradient id="gradNotebook" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#dc2626;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#f87171;stop-opacity:0.8" />
+                    </linearGradient>
+                    
+                    <linearGradient id="gradDatabase" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#d97706;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:0.8" />
+                    </linearGradient>
+                    
+                    <linearGradient id="gradWebhook" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0891b2;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0.8" />
+                    </linearGradient>
+
+                    <!-- Arrow Marker -->
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#00d9ff" opacity="0.8"/>
+                    </marker>
+                </defs>
+
+                <!-- Background Grid -->
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(100, 116, 139, 0.1)" stroke-width="1"/>
+                </pattern>
+                <rect width="1400" height="900" fill="url(#grid)" opacity="0.5"/>
+
+                <!-- Title -->
+                <text x="700" y="40" class="title-text" text-anchor="middle" fill="#00d9ff" font-size="24">Windspear System Architecture</text>
+                <text x="700" y="65" class="label-text" text-anchor="middle" fill="#64748b" font-size="14">Git-driven SysML Ingestion and Processing</text>
+
+                <!-- Main Orchestrator (Top Center) -->
+                <g class="subsystem">
+                    <rect x="550" y="100" width="300" height="80" rx="8" fill="url(#gradMain)" stroke="#3b82f6" stroke-width="2"/>
+                    <text x="700" y="130" class="title-text" text-anchor="middle" fill="#ffffff" font-size="16">Main Orchestrator</text>
+                    <text x="700" y="150" class="label-text" text-anchor="middle" fill="#dbeafe" font-size="12">src/main.py</text>
+                    <text x="700" y="168" class="detail-text" text-anchor="middle" fill="#93c5fd" font-size="11">CLI Entry Point (fire.Fire)</text>
+                </g>
+
+                <!-- Configuration Subsystem (Top Right) -->
+                <g class="subsystem">
+                    <rect x="1100" y="100" width="250" height="80" rx="8" fill="url(#gradConfig)" stroke="#a78bfa" stroke-width="2"/>
+                    <text x="1225" y="130" class="title-text" text-anchor="middle" fill="#ffffff" font-size="14">Configuration</text>
+                    <text x="1225" y="150" class="label-text" text-anchor="middle" fill="#ede9fe" font-size="11">src/env.py</text>
+                    <text x="1225" y="168" class="detail-text" text-anchor="middle" fill="#c4b5fd" font-size="10">Environment Variables</text>
+                </g>
+
+                <!-- Workflow Steps -->
+                <!-- Step 1: Git Repository -->
+                <g class="subsystem">
+                    <rect x="100" y="250" width="280" height="120" rx="8" fill="url(#gradGit)" stroke="#10b981" stroke-width="2"/>
+                    <text x="240" y="280" class="title-text" text-anchor="middle" fill="#ffffff" font-size="15">1. Git Repository</text>
+                    <text x="240" y="300" class="label-text" text-anchor="middle" fill="#d1fae5" font-size="11">src/gitrepo/methods.py</text>
+                    <line x1="110" y1="310" x2="370" y2="310" stroke="#34d399" stroke-width="1" opacity="0.5"/>
+                    <text x="240" y="328" class="label-text" text-anchor="middle" fill="#d1fae5" font-size="11">• Clone repository</text>
+                    <text x="240" y="345" class="label-text" text-anchor="middle" fill="#d1fae5" font-size="11">• Switch branch</text>
+                    <text x="240" y="362" class="label-text" text-anchor="middle" fill="#d1fae5" font-size="11">• Checkout commit</text>
+                </g>
+
+                <!-- Step 2: Notebook Processing -->
+                <g class="subsystem">
+                    <rect x="420" y="250" width="280" height="120" rx="8" fill="url(#gradNotebook)" stroke="#f87171" stroke-width="2"/>
+                    <text x="560" y="280" class="title-text" text-anchor="middle" fill="#ffffff" font-size="15">2. Notebook Processing</text>
+                    <text x="560" y="300" class="label-text" text-anchor="middle" fill="#fee2e2" font-size="11">src/notebook/methods.py</text>
+                    <line x1="430" y1="310" x2="690" y2="310" stroke="#fca5a5" stroke-width="1" opacity="0.5"/>
+                    <text x="560" y="328" class="label-text" text-anchor="middle" fill="#fee2e2" font-size="11">• Discover notebooks</text>
+                    <text x="560" y="345" class="label-text" text-anchor="middle" fill="#fee2e2" font-size="11">• Execute SysML (papermill)</text>
+                    <text x="560" y="362" class="label-text" text-anchor="middle" fill="#fee2e2" font-size="11">• Parse elements</text>
+                </g>
+
+                <!-- Step 3: Database -->
+                <g class="subsystem">
+                    <rect x="740" y="250" width="280" height="120" rx="8" fill="url(#gradDatabase)" stroke="#fbbf24" stroke-width="2"/>
+                    <text x="880" y="280" class="title-text" text-anchor="middle" fill="#ffffff" font-size="15">3. Database</text>
+                    <text x="880" y="300" class="label-text" text-anchor="middle" fill="#fef3c7" font-size="11">src/database/methods.py</text>
+                    <line x1="750" y1="310" x2="1010" y2="310" stroke="#fcd34d" stroke-width="1" opacity="0.5"/>
+                    <text x="880" y="328" class="label-text" text-anchor="middle" fill="#fef3c7" font-size="11">• Insert commit data</text>
+                    <text x="880" y="345" class="label-text" text-anchor="middle" fill="#fef3c7" font-size="11">• Insert models/elements</text>
+                    <text x="880" y="362" class="label-text" text-anchor="middle" fill="#fef3c7" font-size="11">• Insert req/ver/actions</text>
+                </g>
+
+                <!-- Step 4: Webhook Notification -->
+                <g class="subsystem">
+                    <rect x="1060" y="250" width="280" height="120" rx="8" fill="url(#gradWebhook)" stroke="#22d3ee" stroke-width="2"/>
+                    <text x="1200" y="280" class="title-text" text-anchor="middle" fill="#ffffff" font-size="15">4. Webhook Notification</text>
+                    <text x="1200" y="300" class="label-text" text-anchor="middle" fill="#cffafe" font-size="11">Notify completion</text>
+                    <line x1="1070" y1="310" x2="1330" y2="310" stroke="#67e8f9" stroke-width="1" opacity="0.5"/>
+                    <text x="1200" y="328" class="label-text" text-anchor="middle" fill="#cffafe" font-size="11">• Mark commit complete</text>
+                    <text x="1200" y="345" class="label-text" text-anchor="middle" fill="#cffafe" font-size="11">• POST to WINDSTORMHOST</text>
+                </g>
+
+                <!-- Data Flow Arrows -->
+                <!-- Main to Git -->
+                <g class="flow-arrow">
+                    <path d="M 640 180 L 260 250" stroke="#00d9ff" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" opacity="0.7"/>
+                    <text x="420" y="208" fill="#00d9ff" font-size="10" class="label-text">checkout</text>
+                </g>
+
+                <!-- Git to Notebook -->
+                <g class="flow-arrow">
+                    <path d="M 380 310 L 420 310" stroke="#00d9ff" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" opacity="0.7"/>
+                    <text x="390" y="302" fill="#00d9ff" font-size="10" class="label-text">repo data</text>
+                </g>
+
+                <!-- Notebook to Database -->
+                <g class="flow-arrow">
+                    <path d="M 700 310 L 740 310" stroke="#00d9ff" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" opacity="0.7"/>
+                    <text x="710" y="302" fill="#00d9ff" font-size="10" class="label-text">parsed data</text>
+                </g>
+
+                <!-- Database to Webhook -->
+                <g class="flow-arrow">
+                    <path d="M 1020 310 L 1060 310" stroke="#00d9ff" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" opacity="0.7"/>
+                    <text x="1028" y="302" fill="#00d9ff" font-size="10" class="label-text">status</text>
+                </g>
+
+                <!-- Config to Main -->
+                <g class="flow-arrow">
+                    <path d="M 1100 140 L 850 140" stroke="#a78bfa" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.6" stroke-dasharray="5,5"/>
+                    <text x="950" y="132" fill="#a78bfa" font-size="10" class="label-text">config</text>
+                </g>
+
+                <!-- Database Schema Section -->
+                <g>
+                    <rect x="100" y="440" width="1240" height="400" rx="8" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(100, 116, 139, 0.3)" stroke-width="2"/>
+                    <text x="700" y="470" class="title-text" text-anchor="middle" fill="#00d9ff" font-size="16">PostgreSQL Database Schema</text>
+                    <text x="700" y="490" class="label-text" text-anchor="middle" fill="#64748b" font-size="12">SQLAlchemy ORM (src/database/models.py)</text>
+                </g>
+
+                <!-- Database Tables -->
+                <g class="component-box">
+                    <rect x="130" y="520" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="210" y="545" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">model_repo</text>
+                    <line x1="140" y1="552" x2="300" y2="552" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="210" y="570" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">repo_id</text>
+                    <text x="210" y="585" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">default_branch</text>
+                    <text x="210" y="608" class="label-text" text-anchor="middle" fill="#94a3b8" font-size="9" font-style="italic">Tracked repos</text>
+                </g>
+
+                <g class="component-box">
+                    <rect x="320" y="520" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="400" y="545" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">commits</text>
+                    <line x1="330" y1="552" x2="490" y2="552" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="400" y="570" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">ref, commit</text>
+                    <text x="400" y="585" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">processed, date</text>
+                    <text x="400" y="608" class="label-text" text-anchor="middle" fill="#94a3b8" font-size="9" font-style="italic">Processed commits</text>
+                </g>
+
+                <g class="component-box">
+                    <rect x="510" y="520" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="590" y="545" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">elements</text>
+                    <line x1="520" y1="552" x2="680" y2="552" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="590" y="570" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">element_id</text>
+                    <text x="590" y="585" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">element_json</text>
+                    <text x="590" y="608" class="label-text" text-anchor="middle" fill="#94a3b8" font-size="9" font-style="italic">SysML elements</text>
+                </g>
+
+                <g class="component-box">
+                    <rect x="700" y="520" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="780" y="545" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">models</text>
+                    <line x1="710" y1="552" x2="870" y2="552" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="780" y="570" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">nb_id, order</text>
+                    <text x="780" y="585" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">model_text, hash</text>
+                    <text x="780" y="608" class="label-text" text-anchor="middle" fill="#94a3b8" font-size="9" font-style="italic">Extracted models</text>
+                </g>
+
+                <g class="component-box">
+                    <rect x="890" y="520" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="970" y="545" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">models_elements</text>
+                    <line x1="900" y1="552" x2="1060" y2="552" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="970" y="570" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">model_id</text>
+                    <text x="970" y="585" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">element_id</text>
+                    <text x="970" y="608" class="label-text" text-anchor="middle" fill="#94a3b8" font-size="9" font-style="italic">M:N linking</text>
+                </g>
+
+                <g class="component-box">
+                    <rect x="1080" y="520" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="1160" y="545" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">External Tools</text>
+                    <line x1="1090" y1="552" x2="1250" y2="552" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="1160" y="570" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">HARBORTOOL</text>
+                    <text x="1160" y="585" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">ARTIFACTSTOOL</text>
+                    <text x="1160" y="608" class="label-text" text-anchor="middle" fill="#94a3b8" font-size="9" font-style="italic">Tool metadata</text>
+                </g>
+
+                <!-- Second row of tables -->
+                <g class="component-box">
+                    <rect x="225" y="660" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="305" y="685" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">requirements</text>
+                    <line x1="235" y1="692" x2="395" y2="692" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="305" y="710" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">requirement_id</text>
+                    <text x="305" y="725" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">element_id</text>
+                    <text x="305" y="740" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">requirement_data</text>
+                </g>
+
+                <g class="component-box">
+                    <rect x="415" y="660" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="495" y="685" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">verifications</text>
+                    <line x1="425" y1="692" x2="585" y2="692" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="495" y="710" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">verification_id</text>
+                    <text x="495" y="725" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">element_id</text>
+                    <text x="495" y="740" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">verification_data</text>
+                </g>
+
+                <g class="component-box">
+                    <rect x="605" y="660" width="160" height="100" rx="6" fill="rgba(217, 119, 6, 0.2)" stroke="#d97706" stroke-width="1.5"/>
+                    <text x="685" y="685" class="title-text" text-anchor="middle" fill="#fbbf24" font-size="13">actions</text>
+                    <line x1="615" y1="692" x2="775" y2="692" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+                    <text x="685" y="710" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">action_id</text>
+                    <text x="685" y="725" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">tool_uri, variables</text>
+                    <text x="685" y="740" class="detail-text" text-anchor="middle" fill="#cbd5e1" font-size="10">dependencies</text>
+                </g>
+
+                <!-- Database relationships -->
+                <path d="M 290 520 L 400 520 L 400 495" stroke="#64748b" stroke-width="1" fill="none" stroke-dasharray="3,3" opacity="0.4"/>
+                <path d="M 680 570 L 700 570" stroke="#64748b" stroke-width="1" fill="none" stroke-dasharray="3,3" opacity="0.4"/>
+                <path d="M 590 620 L 590 660" stroke="#64748b" stroke-width="1" fill="none" stroke-dasharray="3,3" opacity="0.4"/>
+                <path d="M 870 570 L 890 570" stroke="#64748b" stroke-width="1" fill="none" stroke-dasharray="3,3" opacity="0.4"/>
+
+                <!-- Legend note -->
+                <text x="700" y="810" class="label-text" text-anchor="middle" fill="#64748b" font-size="11" font-style="italic">Note: Dotted lines indicate foreign key relationships between tables</text>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #059669, #10b981);"></div>
+                <div>
+                    <strong style="color: #10b981;">Git Repository</strong><br>
+                    <span style="color: #94a3b8; font-size: 0.75rem;">Clone & checkout operations</span>
+                </div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #dc2626, #f87171);"></div>
+                <div>
+                    <strong style="color: #f87171;">Notebook Processing</strong><br>
+                    <span style="color: #94a3b8; font-size: 0.75rem;">SysML execution & parsing</span>
+                </div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #d97706, #fbbf24);"></div>
+                <div>
+                    <strong style="color: #fbbf24;">Database</strong><br>
+                    <span style="color: #94a3b8; font-size: 0.75rem;">PostgreSQL persistence layer</span>
+                </div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #0891b2, #22d3ee);"></div>
+                <div>
+                    <strong style="color: #22d3ee;">Webhook</strong><br>
+                    <span style="color: #94a3b8; font-size: 0.75rem;">Completion notification</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>Processing Flow</h3>
+            <p><strong>Step 1:</strong> Git repository is cloned and switched to the target branch/commit</p>
+            <p><strong>Step 2:</strong> Jupyter notebooks containing SysML are discovered, assembled, and executed via Papermill</p>
+            <p><strong>Step 3:</strong> Parsed models, elements, requirements, verifications, and actions are stored in PostgreSQL</p>
+            <p><strong>Step 4:</strong> Webhook notification is sent to WINDSTORMHOST marking the commit as processed</p>
+        </div>
+    </div>
+</body>
+</html>

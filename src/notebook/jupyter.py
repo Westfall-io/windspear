@@ -1,4 +1,7 @@
 def _base_nb():
+    # _base_nb: Return a minimal notebook JSON structure configured with
+    # SoS/SysML kernels. This helper is used to synthesize in-memory
+    # notebooks for execution or model extraction.
     return {
         "cells": [],
         "metadata": {
@@ -51,6 +54,9 @@ def _base_nb():
     }
 
 def _make_nb_cell(model_id, model_text, tags=[]):
+    # _make_nb_cell: Create a single code cell dictionary shaped like a
+    # Jupyter notebook cell. The `model_text` is placed into the cell's
+    # `source` and `model_id` is used as the cell id.
     return {
         "cell_type": "code",
         "execution_count": None,
