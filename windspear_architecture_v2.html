@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windspear System Architecture & SysML v2 Model</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #34495e;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: #2c3e50;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        section {
+            margin-bottom: 60px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .diagram-container {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .sysml-block {
+            background: white;
+            border: 2px solid #34495e;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sysml-block h4 {
+            background: #34495e;
+            color: white;
+            padding: 10px;
+            margin: -20px -20px 15px -20px;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .property-list {
+            margin: 10px 0;
+        }
+        
+        .property-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .property-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+        
+        .code-block .keyword {
+            color: #c678dd;
+        }
+        
+        .code-block .type {
+            color: #e5c07b;
+        }
+        
+        .code-block .string {
+            color: #98c379;
+        }
+        
+        .code-block .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .architecture-diagram {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .component-box {
+            display: inline-block;
+            background: white;
+            border: 2px solid #34495e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            min-width: 150px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .component-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .component-box h5 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .layer {
+            margin: 30px 0;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+        }
+        
+        .flow-arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .deployment-node {
+            background: #fff;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .deployment-node h5 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        .relation-line {
+            text-align: center;
+            margin: 10px 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔱 Windspear System Architecture</h1>
+            <p>SysML v2 Model Webhook Processing System</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Digital Forge - Model-Based Systems Engineering Pipeline</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#sysml">SysML v2 Model</a></li>
+                <li><a href="#physical-arch">Physical Architecture</a></li>
+                <li><a href="#functional-arch">Functional Architecture</a></li>
+                <li><a href="#deployment">Deployment Design</a></li>
+                <li><a href="#data-model">Data Model</a></li>
+            </ul>
+        </nav>
+        
+        <div class="content">
+            <!-- OVERVIEW SECTION -->
+            <section id="overview">
+                <h2>System Overview</h2>
+                
+                <div class="info-box">
+                    <strong>Purpose:</strong> Windspear is an automated webhook-driven processing system that extracts, parses, and validates SysML v2 models from Git repositories, storing requirements, verifications, and actions for downstream CI/CD pipelines.
+                </div>
+                
+                <h3>Key Capabilities</h3>
+                <ul>
+                    <li><strong>Webhook-Driven Processing:</strong> Triggered by Git push events via Argo Events</li>
+                    <li><strong>SysML v2 Model Extraction:</strong> Parses Jupyter notebooks containing SysML models</li>
+                    <li><strong>Requirements Management:</strong> Extracts and stores requirement definitions</li>
+                    <li><strong>Verification Tracking:</strong> Links verification cases to requirements</li>
+                    <li><strong>Action Orchestration:</strong> Identifies and manages executable actions with dependencies</li>
+                    <li><strong>Database Persistence:</strong> Stores all artifacts in PostgreSQL for traceability</li>
+                    <li><strong>Downstream Integration:</strong> Notifies Windstorm for further processing</li>
+                </ul>
+                
+                <h3>Technology Stack</h3>
+                <div class="grid-2">
+                    <div>
+                        <h4>Core Technologies</h4>
+                        <ul>
+                            <li>Python 3.11</li>
+                            <li>SysML v2 Jupyter Kernel (v0.34.0)</li>
+                            <li>Papermill (Notebook Execution)</li>
+                            <li>GitPython (Repository Management)</li>
+                            <li>SQLAlchemy (ORM)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Infrastructure</h4>
+                        <ul>
+                            <li>Kubernetes (Orchestration)</li>
+                            <li>Argo Events (Event Processing)</li>
+                            <li>PostgreSQL (Data Persistence)</li>
+                            <li>Docker (Containerization)</li>
+                            <li>Gitea (Git Repository Hosting)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SYSML V2 MODEL SECTION -->
+            <section id="sysml">
+                <h2>SysML v2 System Model</h2>
+                
+                <div class="code-block">
+<span class="keyword">package</span> <span class="type">WindspearSystem</span> {
+    <span class="comment">// System-level package definition</span>
+    
+    <span class="keyword">import</span> <span class="type">ScalarValues</span>::*;
+    <span class="keyword">import</span> <span class="type">SI</span>::*;
+    
+    <span class="comment">// ========================================</span>
+    <span class="comment">// PART DEFINITIONS</span>
+    <span class="comment">// ========================================</span>
+    
+    <span class="keyword">part def</span> <span class="type">WindspearProcessor</span> {
+        <span class="comment">// Main processing component</span>
+        <span class="keyword">doc</span> <span class="string">/* 
+         * Windspear webhook processor that orchestrates the extraction,
+         * parsing, and storage of SysML v2 models from Git repositories.
+         */</span>
+        
+        <span class="keyword">attribute</span> version : <span class="type">String</span> = <span class="string">"v0.1.36"</span>;
+        <span class="keyword">attribute</span> pythonVersion : <span class="type">String</span> = <span class="string">"3.11"</span>;
+        <span class="keyword">attribute</span> sysmlKernelVersion : <span class="type">String</span> = <span class="string">"0.34.0"</span>;
+        
+        <span class="keyword">part</span> gitInterface : <span class="type">GitRepositoryInterface</span>;
+        <span class="keyword">part</span> notebookProcessor : <span class="type">NotebookProcessor</span>;
+        <span class="keyword">part</span> databaseInterface : <span class="type">DatabaseInterface</span>;
+        <span class="keyword">part</span> webhookClient : <span class="type">WebhookClient</span>;
+    }
+    
+    <span class="keyword">part def</span> <span class="type">GitRepositoryInterface</span> {
+        <span class="comment">// Handles Git repository operations</span>
+        <span class="keyword">doc</span> <span class="string">/* Clones repositories, checks out branches/commits, 
+         * and extracts commit metadata */</span>
+        
+        <span class="keyword">attribute</span> gitHost : <span class="type">String</span>;
+        <span class="keyword">attribute</span> gitUser : <span class="type">String</span>;
+        <span class="keyword">attribute</span> gitPass : <span class="type">String</span>;
+        
+        <span class="keyword">perform action</span> cloneRepository;
+        <span class="keyword">perform action</span> checkoutBranch;
+        <span class="keyword">perform action</span> checkoutCommit;
+        <span class="keyword">perform action</span> getCommitMetadata;
+    }
+    
+    <span class="keyword">part def</span> <span class="type">NotebookProcessor</span> {
+        <span class="comment">// Processes Jupyter notebooks containing SysML models</span>
+        <span class="keyword">doc</span> <span class="string">/* Discovers, executes, and parses SysML models from 
+         * Jupyter notebooks using Papermill and SysML kernel */</span>
+        
+        <span class="keyword">part</span> sysmlKernel : <span class="type">SysMLKernel</span>;
+        <span class="keyword">part</span> papermillExecutor : <span class="type">PapermillExecutor</span>;
+        <span class="keyword">part</span> modelParser : <span class="type">ModelParser</span>;
+        
+        <span class="keyword">perform action</span> searchModels;
+        <span class="keyword">perform action</span> executeNotebooks;
+        <span class="keyword">perform action</span> extractElements;
+        <span class="keyword">perform action</span> parseRequirements;
+        <span class="keyword">perform action</span> parseVerifications;
+        <span class="keyword">perform action</span> parseActions;
+    }
+    
+    <span class="keyword">part def</span> <span class="type">SysMLKernel</span> {
+        <span class="comment">// SysML v2 Jupyter kernel</span>
+        <span class="keyword">attribute</span> version : <span class="type">String</span> = <span class="string">"0.34.0"</span>;
+        <span class="keyword">attribute</span> apiBasePath : <span class="type">String</span>;
+        
+        <span class="keyword">perform action</span> executeModel;
+        <span class="keyword">perform action</span> exportElements;
+    }
+    
+    <span class="keyword">part def</span> <span class="type">ModelParser</span> {
+        <span class="comment">// Parses exported SysML elements</span>
+        <span class="keyword">perform action</span> identifyRequirements;
+        <span class="keyword">perform action</span> identifyVerifications;
+        <span class="keyword">perform action</span> identifyActions;
+        <span class="keyword">perform action</span> resolveRelationships;
+        <span class="keyword">perform action</span> validateToolMetadata;
+    }
+    
+    <span class="keyword">part def</span> <span class="type">DatabaseInterface</span> {
+        <span class="comment">// PostgreSQL database interface</span>
+        <span class="keyword">doc</span> <span class="string">/* Persists commits, models, elements, requirements,
+         * verifications, and actions to PostgreSQL */</span>
+        
+        <span class="keyword">attribute</span> host : <span class="type">String</span>;
+        <span class="keyword">attribute</span> user : <span class="type">String</span>;
+        <span class="keyword">attribute</span> database : <span class="type">String</span>;
+        
+        <span class="keyword">perform action</span> insertCommit;
+        <span class="keyword">perform action</span> insertModels;
+        <span class="keyword">perform action</span> insertElements;
+        <span class="keyword">perform action</span> insertRequirements;
+        <span class="keyword">perform action</span> insertVerifications;
+        <span class="keyword">perform action</span> insertActions;
+        <span class="keyword">perform action</span> markCommitComplete;
+    }
+    
+    <span class="keyword">part def</span> <span class="type">WebhookClient</span> {
+        <span class="comment">// Sends notifications to downstream systems</span>
+        <span class="keyword">attribute</span> windstormHost : <span class="type">String</span>;
+        
+        <span class="keyword">perform action</span> notifyWindstorm;
+    }
+    
+    <span class="comment">// ========================================</span>
+    <span class="comment">// REQUIREMENTS</span>
+    <span class="comment">// ========================================</span>
+    
+    <span class="keyword">requirement def</span> <span class="type">ProcessGitWebhook</span> {
+        <span class="keyword">doc</span> <span class="string">/* The system shall process Git push webhooks and extract
+         * the repository path, branch reference, and commit ID */</span>
+        
+        <span class="keyword">subject</span> processor : <span class="type">WindspearProcessor</span>;
+        
+        <span class="keyword">require constraint</span> {
+            processor.gitInterface.gitHost <> <span class="keyword">null</span>
+        }
+    }
+    
+    <span class="keyword">requirement def</span> <span class="type">ExtractSysMLModels</span> {
+        <span class="keyword">doc</span> <span class="string">/* The system shall discover and extract all SysML code cells
+         * from Jupyter notebooks in the repository */</span>
+        
+        <span class="keyword">subject</span> processor : <span class="type">WindspearProcessor</span>;
+    }
+    
+    <span class="keyword">requirement def</span> <span class="type">ExecuteModels</span> {
+        <span class="keyword">doc</span> <span class="string">/* The system shall execute SysML models using the SysML v2
+         * Jupyter kernel and export element definitions */</span>
+        
+        <span class="keyword">subject</span> processor : <span class="type">WindspearProcessor</span>;
+        
+        <span class="keyword">require constraint</span> {
+            processor.notebookProcessor.sysmlKernel.version == <span class="string">"0.34.0"</span>
+        }
+    }
+    
+    <span class="keyword">requirement def</span> <span class="type">ParseElements</span> {
+        <span class="keyword">doc</span> <span class="string">/* The system shall parse exported elements to identify
+         * RequirementUsages, VerificationCaseDefinitions, and ActionUsages */</span>
+        
+        <span class="keyword">subject</span> processor : <span class="type">WindspearProcessor</span>;
+    }
+    
+    <span class="keyword">requirement def</span> <span class="type">PersistArtifacts</span> {
+        <span class="keyword">doc</span> <span class="string">/* The system shall persist all commits, models, elements,
+         * requirements, verifications, and actions to PostgreSQL */</span>
+        
+        <span class="keyword">subject</span> processor : <span class="type">WindspearProcessor</span>;
+    }
+    
+    <span class="keyword">requirement def</span> <span class="type">NotifyDownstream</span> {
+        <span class="keyword">doc</span> <span class="string">/* The system shall notify Windstorm webhook endpoint upon
+         * successful completion of processing */</span>
+        
+        <span class="keyword">subject</span> processor : <span class="type">WindspearProcessor</span>;
+    }
+    
+    <span class="comment">// ========================================</span>
+    <span class="comment">// VERIFICATION CASES</span>
+    <span class="comment">// ========================================</span>
+    
+    <span class="keyword">verification def</span> <span class="type">VerifyWebhookProcessing</span> {
+        <span class="keyword">verify requirement</span> ProcessGitWebhook;
+        
+        <span class="keyword">subject</span> testProcessor : <span class="type">WindspearProcessor</span>;
+        
+        <span class="comment">// Test action would invoke processor with sample webhook</span>
+    }
+    
+    <span class="keyword">verification def</span> <span class="type">VerifyModelExtraction</span> {
+        <span class="keyword">verify requirement</span> ExtractSysMLModels;
+        
+        <span class="keyword">subject</span> testProcessor : <span class="type">WindspearProcessor</span>;
+        
+        <span class="comment">// Test action would validate notebook discovery</span>
+    }
+    
+    <span class="comment">// ========================================</span>
+    <span class="comment">// SYSTEM CONNECTIONS</span>
+    <span class="comment">// ========================================</span>
+    
+    <span class="keyword">connection def</span> <span class="type">DatabaseConnection</span> {
+        <span class="keyword">end</span> client : <span class="type">WindspearProcessor</span>;
+        <span class="keyword">end</span> server : <span class="type">PostgreSQLDatabase</span>;
+    }
+    
+    <span class="keyword">connection def</span> <span class="type">GitConnection</span> {
+        <span class="keyword">end</span> client : <span class="type">WindspearProcessor</span>;
+        <span class="keyword">end</span> server : <span class="type">GiteaRepository</span>;
+    }
+    
+    <span class="keyword">connection def</span> <span class="type">SysMLAPIConnection</span> {
+        <span class="keyword">end</span> client : <span class="type">SysMLKernel</span>;
+        <span class="keyword">end</span> server : <span class="type">SysMLv2API</span>;
+    }
+    
+    <span class="comment">// ========================================</span>
+    <span class="comment">// INTERFACES</span>
+    <span class="comment">// ========================================</span>
+    
+    <span class="keyword">interface def</span> <span class="type">WebhookInterface</span> {
+        <span class="keyword">in</span> ref : <span class="type">String</span>;
+        <span class="keyword">in</span> commit : <span class="type">String</span>;
+        <span class="keyword">in</span> repoPath : <span class="type">String</span>;
+        <span class="keyword">in</span> defaultBranch : <span class="type">String</span>;
+    }
+    
+    <span class="keyword">interface def</span> <span class="type">DatabaseInterface</span> {
+        <span class="keyword">out</span> commitId : <span class="type">Integer</span>;
+        <span class="keyword">attribute</span> connectionString : <span class="type">String</span>;
+    }
+}
+                </div>
+                
+                <div class="sysml-block">
+                    <h4>«block» WindspearProcessor</h4>
+                    <div class="property-list">
+                        <strong>Properties:</strong>
+                        <ul>
+                            <li>version: String = "v0.1.36"</li>
+                            <li>pythonVersion: String = "3.11"</li>
+                            <li>sysmlKernelVersion: String = "0.34.0"</li>
+                        </ul>
+                        <strong>Parts:</strong>
+                        <ul>
+                            <li>gitInterface: GitRepositoryInterface</li>
+                            <li>notebookProcessor: NotebookProcessor</li>
+                            <li>databaseInterface: DatabaseInterface</li>
+                            <li>webhookClient: WebhookClient</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- PHYSICAL ARCHITECTURE SECTION -->
+            <section id="physical-arch">
+                <h2>Physical Architecture</h2>
+                
+                <div class="diagram-container">
+                    <h3 style="text-align: center; margin-bottom: 30px;">Component Deployment View</h3>
+                    
+                    <div class="layer">
+                        <h4>🌐 Event Layer</h4>
+                        <div class="architecture-diagram">
+                            <div class="component-box">
+                                <h5>Argo Events<br/>Event Source</h5>
+                                <p style="font-size: 0.9em; color: #666;">Webhook Listener<br/>Port: 12000</p>
+                            </div>
+                            <div class="component-box">
+                                <h5>Argo Events<br/>Sensor</h5>
+                                <p style="font-size: 0.9em; color: #666;">Event Processor<br/>Pod Trigger</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="layer">
+                        <h4>⚙️ Processing Layer</h4>
+                        <div class="architecture-diagram">
+                            <div class="component-box" style="min-width: 300px;">
+                                <h5>Windspear Pod</h5>
+                                <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
+                                    <strong>Container:</strong> westfallio/windspear:v0.1.36
+                                </p>
+                                <div style="text-align: left; font-size: 0.85em;">
+                                    <strong>Components:</strong>
+                                    <ul style="margin-left: 20px;">
+                                        <li>Python 3.11 Runtime</li>
+                                        <li>SysML Kernel v0.34.0</li>
+                                        <li>Papermill Executor</li>
+                                        <li>GitPython Client</li>
+                                        <li>SQLAlchemy ORM</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="layer">
+                        <h4>🗄️ Data Layer</h4>
+                        <div class="architecture-diagram">
+                            <div class="component-box">
+                                <h5>PostgreSQL</h5>
+                                <p style="font-size: 0.9em; color: #666;">Database Server<br/>Port: 5432</p>
+                                <p style="font-size: 0.8em; margin-top: 5px;">Tables: commits, models,<br/>elements, requirements,<br/>verifications, actions</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="layer">
+                        <h4>🔗 Integration Layer</h4>
+                        <div class="architecture-diagram">
+                            <div class="component-box">
+                                <h5>Gitea</h5>
+                                <p style="font-size: 0.9em; color: #666;">Git Repository<br/>Port: 3000</p>
+                            </div>
+                            <div class="component-box">
+                                <h5>SysML v2 API</h5>
+                                <p style="font-size: 0.9em; color: #666;">Model API<br/>Port: 9000</p>
+                            </div>
+                            <div class="component-box">
+                                <h5>Windstorm</h5>
+                                <p style="font-size: 0.9em; color: #666;">Downstream<br/>Webhook</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Component Descriptions</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Technology</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Argo Events Source</strong></td>
+                            <td>Event Listener</td>
+                            <td>Receives Git webhook POST requests</td>
+                            <td>Argo Events EventSource</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Argo Events Sensor</strong></td>
+                            <td>Event Processor</td>
+                            <td>Triggers Kubernetes Pod creation</td>
+                            <td>Argo Events Sensor</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Windspear Pod</strong></td>
+                            <td>Processing Container</td>
+                            <td>Executes model extraction pipeline</td>
+                            <td>Docker Container (Python 3.11)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SysML Kernel</strong></td>
+                            <td>Jupyter Kernel</td>
+                            <td>Executes SysML v2 models</td>
+                            <td>jupyter-sysml-kernel v0.34.0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PostgreSQL</strong></td>
+                            <td>Database</td>
+                            <td>Persists all processing artifacts</td>
+                            <td>PostgreSQL 14+</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gitea</strong></td>
+                            <td>Git Server</td>
+                            <td>Hosts model repositories</td>
+                            <td>Gitea (self-hosted)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SysML v2 API</strong></td>
+                            <td>Model Server</td>
+                            <td>Provides SysML element services</td>
+                            <td>SysML v2 Pilot Implementation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Windstorm</strong></td>
+                            <td>Downstream System</td>
+                            <td>Receives completion notifications</td>
+                            <td>Custom Webhook Service</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Network Topology</h3>
+                <div class="diagram-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th>Destination</th>
+                                <th>Protocol</th>
+                                <th>Port</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Git Client</td>
+                                <td>Argo Events</td>
+                                <td>HTTP</td>
+                                <td>12000</td>
+                                <td>Webhook delivery</td>
+                            </tr>
+                            <tr>
+                                <td>Windspear Pod</td>
+                                <td>Gitea</td>
+                                <td>HTTP/Git</td>
+                                <td>3000</td>
+                                <td>Repository clone</td>
+                            </tr>
+                            <tr>
+                                <td>Windspear Pod</td>
+                                <td>PostgreSQL</td>
+                                <td>PostgreSQL</td>
+                                <td>5432</td>
+                                <td>Data persistence</td>
+                            </tr>
+                            <tr>
+                                <td>SysML Kernel</td>
+                                <td>SysML v2 API</td>
+                                <td>HTTP</td>
+                                <td>9000</td>
+                                <td>Element operations</td>
+                            </tr>
+                            <tr>
+                                <td>Windspear Pod</td>
+                                <td>Windstorm</td>
+                                <td>HTTP</td>
+                                <td>12000</td>
+                                <td>Completion notification</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- FUNCTIONAL ARCHITECTURE SECTION -->
+            <section id="functional-arch">
+                <h2>Functional Architecture</h2>
+                
+                <div class="diagram-container">
+                    <h3 style="text-align: center; margin-bottom: 20px;">Processing Pipeline Flow</h3>
+                    
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <div class="component-box" style="width: 100%; background: #e3f2fd;">
+                            <h5>1. Webhook Reception</h5>
+                            <p>Argo Events receives Git push webhook with ref, commit, and repository path</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #f3e5f5;">
+                            <h5>2. Pod Initialization</h5>
+                            <p>Sensor creates Windspear Pod with environment variables and webhook payload parameters</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #e8f5e9;">
+                            <h5>3. Repository Checkout</h5>
+                            <p>GitRepositoryInterface clones repository, switches to branch, collects commit metadata, checks out specific commit</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #fff3e0;">
+                            <h5>4. Commit Registration</h5>
+                            <p>DatabaseInterface inserts/updates commit record with metadata and marks as unprocessed</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #fce4ec;">
+                            <h5>5. Model Discovery</h5>
+                            <p>NotebookProcessor searches for .ipynb files with SysML/sos kernels, extracts SysML code cells</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #e0f2f1;">
+                            <h5>6. Model Execution</h5>
+                            <p>Papermill executes temporary notebook with SysML kernel, exports element JSON from outputs</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #f1f8e9;">
+                            <h5>7. Element Parsing</h5>
+                            <p>ModelParser decodes base64 JSON, identifies RequirementUsage, VerificationCaseDefinition, ActionUsage elements</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #e8eaf6;">
+                            <h5>8. Artifact Persistence</h5>
+                            <p>DatabaseInterface stores models, elements, requirements, verifications, actions with relationships</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #ffeeff;">
+                            <h5>9. Verification Analysis</h5>
+                            <p>System validates actions have Harbor container URIs and artifact storage locations</p>
+                        </div>
+                        
+                        <div class="flow-arrow">↓</div>
+                        
+                        <div class="component-box" style="width: 100%; background: #e0f7fa;">
+                            <h5>10. Completion Notification</h5>
+                            <p>Commit marked as processed, Windstorm webhook notified with branch reference</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Key Functional Modules</h3>
+                
+                <div class="grid-2">
+                    <div class="sysml-block">
+                        <h4>GitRepo Module</h4>
+                        <strong>Functions:</strong>
+                        <ul>
+                            <li>checkout_branch_commit(): Clone and checkout</li>
+                            <li>get_commit_data(): Extract metadata</li>
+                        </ul>
+                        <strong>Location:</strong> src/gitrepo/methods.py
+                    </div>
+                    
+                    <div class="sysml-block">
+                        <h4>Notebook Module</h4>
+                        <strong>Functions:</strong>
+                        <ul>
+                            <li>search_models(): Discover SysML notebooks</li>
+                            <li>parse_models(): Extract requirements/verifications</li>
+                            <li>handle_verification(): Process verification cases</li>
+                            <li>handle_requirement(): Process requirements</li>
+                        </ul>
+                        <strong>Location:</strong> src/notebook/methods.py
+                    </div>
+                    
+                    <div class="sysml-block">
+                        <h4>Database Module</h4>
+                        <strong>Functions:</strong>
+                        <ul>
+                            <li>insert_commit_data(): Persist commit</li>
+                            <li>insert_model_data(): Persist models/elements</li>
+                            <li>insert_req_ver_actions(): Persist artifacts</li>
+                            <li>push_commit_completed(): Mark complete</li>
+                        </ul>
+                        <strong>Location:</strong> src/database/methods.py
+                    </div>
+                    
+                    <div class="sysml-block">
+                        <h4>Main Orchestrator</h4>
+                        <strong>Functions:</strong>
+                        <ul>
+                            <li>main(): Orchestrate entire pipeline</li>
+                            <li>getDateTimeFromISO8601String(): Parse dates</li>
+                        </ul>
+                        <strong>Location:</strong> src/main.py
+                    </div>
+                </div>
+                
+                <h3>Action Processing Logic</h3>
+                <div class="info-box">
+                    <h4>Action Validation Criteria</h4>
+                    <p>An action is considered valid for DigitalForge execution if:</p>
+                    <ul>
+                        <li>✅ Has a Harbor container image URI specified</li>
+                        <li>✅ Has an artifacts storage location (e.g., MinIO URI)</li>
+                        <li>✅ All required variables are defined with units</li>
+                        <li>✅ Dependencies are resolved (if present)</li>
+                    </ul>
+                </div>
+                
+                <h3>Error Handling</h3>
+                <div class="warning-box">
+                    <h4>Retry Mechanisms</h4>
+                    <ul>
+                        <li><strong>SysML Kernel Start:</strong> Up to 5 retry attempts with exponential backoff</li>
+                        <li><strong>Database Connections:</strong> Connection pooling with automatic reconnection</li>
+                        <li><strong>Git Operations:</strong> Credential injection for authenticated access</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- DATA MODEL SECTION -->
+            <section id="data-model">
+                <h2>Data Model</h2>
+                
+                <h3>Database Schema</h3>
+                
+                <div class="diagram-container">
+                    <h4>Entity-Relationship Diagram</h4>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <div class="component-box" style="background: #fff9c4;">
+                            <h5>model_repo</h5>
+                            <div style="text-align: left; font-size: 0.85em;">
+                                <strong>PK:</strong> id<br/>
+                                full_name<br/>
+                                default_branch
+                            </div>
+                        </div>
+                        
+                        <div class="relation-line">1:N ↓</div>
+                        
+                        <div class="component-box" style="background: #e1f5fe;">
+                            <h5>commits</h5>
+                            <div style="text-align: left; font-size: 0.85em;">
+                                <strong>PK:</strong> id<br/>
+                                ref<br/>
+                                commit<br/>
+                                processed<br/>
+                                date
+                            </div>
+                        </div>
+                        
+                        <div class="relation-line">1:N ↓</div>
+                        
+                        <div style="display: inline-block;">
+                            <div class="component-box" style="background: #f3e5f5; display: inline-block; vertical-align: top;">
+                                <h5>models</h5>
+                                <div style="text-align: left; font-size: 0.85em;">
+                                    <strong>PK:</strong> id<br/>
+                                    <strong>FK:</strong> commit_id<br/>
+                                    nb_id<br/>
+                                    execution_order<br/>
+                                    model_text<br/>
+                                    model_hash<br/>
+                                    path_text<br/>
+                                    path_hash<br/>
+                                    element_name
+                                </div>
+                            </div>
+                            
+                            <div class="component-box" style="background: #e8f5e9; display: inline-block; vertical-align: top; margin-left: 20px;">
+                                <h5>elements</h5>
+                                <div style="text-align: left; font-size: 0.85em;">
+                                    <strong>PK:</strong> id<br/>
+                                    <strong>FK:</strong> commit_id<br/>
+                                    element_id<br/>
+                                    element_text<br/>
+                                    element_name
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="relation-line">N:M ↓</div>
+                        
+                        <div class="component-box" style="background: #fff3e0;">
+                            <h5>models_elements</h5>
+                            <div style="text-align: left; font-size: 0.85em;">
+                                <strong>PK:</strong> id<br/>
+                                <strong>FK:</strong> model_id<br/>
+                                <strong>FK:</strong> element_id<br/>
+                                <strong>FK:</strong> commit_id
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <div class="component-box" style="background: #fce4ec; display: inline-block; vertical-align: top;">
+                                <h5>requirements</h5>
+                                <div style="text-align: left; font-size: 0.85em;">
+                                    <strong>PK:</strong> id<br/>
+                                    <strong>FK:</strong> commit_id<br/>
+                                    <strong>FK:</strong> element_id<br/>
+                                    declaredName<br/>
+                                    shortName<br/>
+                                    qualifiedName
+                                </div>
+                            </div>
+                            
+                            <div class="component-box" style="background: #e0f2f1; display: inline-block; vertical-align: top; margin-left: 20px;">
+                                <h5>verifications</h5>
+                                <div style="text-align: left; font-size: 0.85em;">
+                                    <strong>PK:</strong> id<br/>
+                                    <strong>FK:</strong> commit_id<br/>
+                                    <strong>FK:</strong> element_id<br/>
+                                    <strong>FK:</strong> requirement_id<br/>
+                                    attempted
+                                </div>
+                            </div>
+                            
+                            <div class="component-box" style="background: #f1f8e9; display: inline-block; vertical-align: top; margin-left: 20px;">
+                                <h5>actions</h5>
+                                <div style="text-align: left; font-size: 0.85em;">
+                                    <strong>PK:</strong> id<br/>
+                                    <strong>FK:</strong> commit_id<br/>
+                                    <strong>FK:</strong> element_id<br/>
+                                    <strong>FK:</strong> verifications_id<br/>
+                                    shortName<br/>
+                                    declaredName<br/>
+                                    qualifiedName<br/>
+                                    harbor<br/>
+                                    artifacts<br/>
+                                    variables<br/>
+                                    valid<br/>
+                                    dependency
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Table Descriptions</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Table</th>
+                            <th>Purpose</th>
+                            <th>Key Relationships</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>model_repo</strong></td>
+                            <td>Stores repository metadata</td>
+                            <td>1:N with commits</td>
+                        </tr>
+                        <tr>
+                            <td><strong>commits</strong></td>
+                            <td>Tracks processing status of each commit</td>
+                            <td>1:N with models, elements, requirements, verifications, actions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>models</strong></td>
+                            <td>Stores SysML model text and metadata</td>
+                            <td>N:1 with commits, N:M with elements via models_elements</td>
+                        </tr>
+                        <tr>
+                            <td><strong>elements</strong></td>
+                            <td>Stores exported SysML element JSON</td>
+                            <td>N:1 with commits, N:M with models, 1:1 with requirements</td>
+                        </tr>
+                        <tr>
+                            <td><strong>models_elements</strong></td>
+                            <td>Junction table linking models to elements</td>
+                            <td>N:1 with models, N:1 with elements</td>
+                        </tr>
+                        <tr>
+                            <td><strong>requirements</strong></td>
+                            <td>Stores parsed requirement definitions</td>
+                            <td>N:1 with commits, 1:1 with elements, 1:N with verifications</td>
+                        </tr>
+                        <tr>
+                            <td><strong>verifications</strong></td>
+                            <td>Links verification cases to requirements</td>
+                            <td>N:1 with commits, requirements, elements; 1:N with actions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>actions</strong></td>
+                            <td>Stores executable actions with tool metadata</td>
+                            <td>N:1 with commits, verifications, elements; self-referencing for dependencies</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- DEPLOYMENT SECTION -->
+            <section id="deployment">
+                <h2>Deployment Design</h2>
+                
+                <h3>Kubernetes Deployment</h3>
+                
+                <div class="deployment-node">
+                    <h5>Namespace: argo-events</h5>
+                    <div style="margin-left: 20px;">
+                        <div class="deployment-node" style="border-color: #2196f3;">
+                            <h5>EventSource: webhook</h5>
+                            <div class="code-block" style="font-size: 0.8em;">
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: webhook
+spec:
+  webhook:
+    windspear:
+      port: "12000"
+      endpoint: /windspear
+      method: POST
+                            </div>
+                        </div>
+                        
+                        <div class="deployment-node" style="border-color: #4caf50;">
+                            <h5>Sensor: webhook</h5>
+                            <div class="code-block" style="font-size: 0.8em;">
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: webhook
+spec:
+  dependencies:
+    - name: payload
+      eventSourceName: webhook
+      eventName: windspear
+  triggers:
+    - template:
+        name: windspear
+        k8s:
+          operation: create
+          resource: pods
+          source:
+            resource:
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                generateName: windspear-
+              spec:
+                containers:
+                  - name: publish
+                    image: westfallio/windspear:v0.1.36
+                    command: ["python"]
+                    args:
+                      - "src/main.py"
+                      - ""  <span class="comment"># ref parameter</span>
+                      - ""  <span class="comment"># commit parameter</span>
+                      - ""  <span class="comment"># repopath parameter</span>
+                      - ""  <span class="comment"># defaultBranch parameter</span>
+                    env:
+                      - name: GITHOST
+                        value: http://gitea-models-http:3000/
+                      - name: APIHOST
+                        value: http://sysmlv2api:9000/
+                      - name: SQLHOST
+                        value: postgres-postgresql:5432
+                      - name: WINDSTORMHOST
+                        value: http://windstorm-webhook:12000/windstorm
+                restartPolicy: Never
+          parameters:
+            - src:
+                dependencyName: payload
+                dataKey: body.ref
+              dest: spec.containers.1.args.1
+            - src:
+                dependencyName: payload
+                dataKey: body.commits.0.id
+              dest: spec.containers.1.args.2
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Container Configuration</h3>
+                
+                <div class="deployment-node">
+                    <h5>Docker Image: westfallio/windspear:v0.1.36</h5>
+                    <div class="code-block" style="font-size: 0.85em;">
+<span class="keyword">FROM</span> python:3.11-slim
+
+<span class="comment"># Install system dependencies</span>
+<span class="keyword">RUN</span> apt-get update && apt-get install -y \
+    libpq-dev gcc wget unzip git \
+    default-jre default-jdk graphviz
+
+<span class="comment"># Install Python dependencies</span>
+<span class="keyword">RUN</span> pip install <span class="string">"psycopg[binary]"</span>
+<span class="keyword">COPY</span> requirements.txt .
+<span class="keyword">RUN</span> pip install -r requirements.txt
+
+<span class="comment"># Install SysML v2 Jupyter Kernel</span>
+<span class="keyword">RUN</span> wget https://github.com/Systems-Modeling/\
+SysML-v2-Pilot-Implementation/releases/download/\
+2023-07/jupyter-sysml-kernel-0.34.0.zip
+<span class="keyword">RUN</span> unzip jupyter-sysml-kernel-0.34.0.zip -d /tmp && \
+    python3 /tmp/install.py
+
+<span class="comment"># Configure SysML kernel API endpoint</span>
+<span class="keyword">RUN</span> sed <span class="string">'s|"env": {},|"env": {"ISYSML_API_BASE_PATH": "'$APIHOST'"},|'</span> \
+    -i /usr/local/share/jupyter/kernels/sysml/kernel.json
+
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">COPY</span> src src
+
+<span class="keyword">CMD</span> [<span class="string">"python"</span>, <span class="string">"src/main.py"</span>, <span class="string">""</span>, <span class="string">""</span>, <span class="string">""</span>]
+                    </div>
+                </div>
+                
+                <h3>Environment Variables</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Purpose</th>
+                            <th>Source</th>
+                            <th>Example Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GITHOST</td>
+                            <td>Git repository server URL</td>
+                            <td>ConfigMap/Direct</td>
+                            <td>http://gitea-models-http:3000/</td>
+                        </tr>
+                        <tr>
+                            <td>GITUSER</td>
+                            <td>Git authentication username</td>
+                            <td>Secret: gitparams</td>
+                            <td>(encrypted)</td>
+                        </tr>
+                        <tr>
+                            <td>GITPASS</td>
+                            <td>Git authentication password</td>
+                            <td>Secret: gitparams</td>
+                            <td>(encrypted)</td>
+                        </tr>
+                        <tr>
+                            <td>APIHOST</td>
+                            <td>SysML v2 API endpoint</td>
+                            <td>ConfigMap/Direct</td>
+                            <td>http://sysmlv2api:9000/</td>
+                        </tr>
+                        <tr>
+                            <td>SQLHOST</td>
+                            <td>PostgreSQL server address</td>
+                            <td>ConfigMap/Direct</td>
+                            <td>postgres-postgresql:5432</td>
+                        </tr>
+                        <tr>
+                            <td>DBUSER</td>
+                            <td>Database username</td>
+                            <td>Secret: dbparams</td>
+                            <td>(encrypted)</td>
+                        </tr>
+                        <tr>
+                            <td>DBPASS</td>
+                            <td>Database password</td>
+                            <td>Secret: dbparams</td>
+                            <td>(encrypted)</td>
+                        </tr>
+                        <tr>
+                            <td>DBTABLE</td>
+                            <td>Database name</td>
+                            <td>Secret: dbparams</td>
+                            <td>windstorm</td>
+                        </tr>
+                        <tr>
+                            <td>WINDSTORMHOST</td>
+                            <td>Downstream webhook URL</td>
+                            <td>ConfigMap/Direct</td>
+                            <td>http://windstorm-webhook:12000/windstorm</td>
+                        </tr>
+                        <tr>
+                            <td>HARBORTOOL</td>
+                            <td>Container registry identifier</td>
+                            <td>Direct</td>
+                            <td>Harbor</td>
+                        </tr>
+                        <tr>
+                            <td>ARTIFACTSTOOL</td>
+                            <td>Artifact storage identifier</td>
+                            <td>Direct</td>
+                            <td>Artifacts</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Secrets Management</h3>
+                
+                <div class="info-box">
+                    <h4>Required Kubernetes Secrets</h4>
+                    <div class="code-block" style="font-size: 0.85em;">
+<span class="comment"># Database credentials</span>
+kubectl create secret generic dbparams \
+  --from-literal=username=<span class="string">'windstorm_user'</span> \
+  --from-literal=password=<span class="string">'&lt;db-password&gt;'</span> \
+  --from-literal=table=<span class="string">'windstorm'</span>
+
+<span class="comment"># Git credentials</span>
+kubectl create secret generic gitparams \
+  --from-literal=username=<span class="string">'gitea_admin'</span> \
+  --from-literal=password=<span class="string">'&lt;git-password&gt;'</span>
+                    </div>
+                </div>
+                
+                <h3>Service Dependencies</h3>
+                
+                <div class="grid-2">
+                    <div class="deployment-node">
+                        <h5>PostgreSQL Service</h5>
+                        <div class="code-block" style="font-size: 0.8em;">
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-postgresql
+  namespace: windstorm
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgresql
+                        </div>
+                    </div>
+                    
+                    <div class="deployment-node">
+                        <h5>Gitea Service</h5>
+                        <div class="code-block" style="font-size: 0.8em;">
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitea-models-http
+  namespace: gitea-models
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: gitea
+                        </div>
+                    </div>
+                    
+                    <div class="deployment-node">
+                        <h5>SysML v2 API Service</h5>
+                        <div class="code-block" style="font-size: 0.8em;">
+apiVersion: v1
+kind: Service
+metadata:
+  name: sysmlv2api
+  namespace: sysmlapi
+spec:
+  ports:
+    - port: 9000
+      targetPort: 9000
+  selector:
+    app: sysml-api
+                        </div>
+                    </div>
+                    
+                    <div class="deployment-node">
+                        <h5>Windstorm Webhook Service</h5>
+                        <div class="code-block" style="font-size: 0.8em;">
+apiVersion: v1
+kind: Service
+metadata:
+  name: windstorm-webhook
+  namespace: argo-events
+spec:
+  ports:
+    - port: 12000
+      targetPort: 12000
+  selector:
+    app: windstorm
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Deployment Workflow</h3>
+                
+                <div class="diagram-container">
+                    <ol style="font-size: 1.1em; line-height: 2;">
+                        <li><strong>Developer pushes to Git:</strong> Commit triggers webhook to Argo Events</li>
+                        <li><strong>Webhook received:</strong> EventSource captures POST request with payload</li>
+                        <li><strong>Sensor triggers:</strong> Creates ephemeral Windspear Pod with webhook parameters</li>
+                        <li><strong>Pod starts:</strong> Pulls Docker image, initializes Python environment</li>
+                        <li><strong>Processing begins:</strong> main.py orchestrates entire pipeline</li>
+                        <li><strong>Repository cloned:</strong> Git operations via GitPython</li>
+                        <li><strong>Models executed:</strong> SysML kernel processes notebooks</li>
+                        <li><strong>Data persisted:</strong> PostgreSQL stores all artifacts</li>
+                        <li><strong>Notification sent:</strong> Windstorm receives completion webhook</li>
+                        <li><strong>Pod terminates:</strong> restartPolicy: Never ensures cleanup</li>
+                    </ol>
+                </div>
+                
+                <h3>Scaling Considerations</h3>
+                
+                <div class="warning-box">
+                    <h4>Performance Notes</h4>
+                    <ul>
+                        <li><strong>Ephemeral Pods:</strong> Each webhook creates a new pod - no state preservation</li>
+                        <li><strong>Concurrent Processing:</strong> Multiple webhooks create multiple pods in parallel</li>
+                        <li><strong>Database Connection Pooling:</strong> SQLAlchemy manages connection lifecycle</li>
+                        <li><strong>SysML Kernel Startup:</strong> 5-retry mechanism handles kernel initialization failures</li>
+                        <li><strong>Git Clone Operations:</strong> Fresh clone for each execution ensures consistency</li>
+                    </ul>
+                </div>
+                
+                <h3>Monitoring & Observability</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Source</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pod Status</td>
+                            <td>Kubernetes API</td>
+                            <td>Track processing completion/failure</td>
+                        </tr>
+                        <tr>
+                            <td>Processing Time</td>
+                            <td>Python timing (main.py)</td>
+                            <td>Performance analysis</td>
+                        </tr>
+                        <tr>
+                            <td>Commit Processed Flag</td>
+                            <td>PostgreSQL commits table</td>
+                            <td>Identify stuck/failed commits</td>
+                        </tr>
+                        <tr>
+                            <td>Action Validity</td>
+                            <td>PostgreSQL actions.valid</td>
+                            <td>Track DigitalForge-ready actions</td>
+                        </tr>
+                        <tr>
+                            <td>Webhook Delivery</td>
+                            <td>Windstorm logs</td>
+                            <td>Verify downstream notification</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023-2024 Westfall Inc. | Windspear v0.1.36</p>
+            <p style="font-size: 0.9em; margin-top: 5px;">Licensed under GNU Affero General Public License v3.0</p>
+            <p style="font-size: 0.8em; margin-top: 10px;">
+                Generated: February 1, 2026 | SysML v2 Architecture Documentation
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
